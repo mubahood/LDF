@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('vets', function (Blueprint $table) {
             $table->id();
+            $table->string('profile_picture')->nullable();
             $table->string('title');
             $table->string('surname');
             $table->string('given_name');

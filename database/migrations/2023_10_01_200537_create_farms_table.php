@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('farms', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('location')->nullable();
+            $table->string('livestock_type')->nullable();
+            $table->string('production_type')->nullable()->comment('Milk, eggs, meat, etc');
+            $table->date('date_of_establishment')->nullable();
+            $table->string('size')->nullable();
+            $table->string('profile_picture')->nullable();
+            $table->number('number_of_livestock')->nullable();
+            $table->number('number_of_workers')->nullable();
+            $table->string('land_ownership')->nullable();
+            $table->text('general_remarks')->nullable();
             $table->timestamps();
         });
     }

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('farmers', function (Blueprint $table) {
             $table->id();
+            $table->string('profile_picture')->nullable();
             $table->string('surname');
             $table->string('given_name');
             $table->date('date_of_birth')->nullable();
