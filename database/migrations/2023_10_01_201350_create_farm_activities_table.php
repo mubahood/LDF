@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('farm_activities', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('farm_id')->constrained();
+            $table->string('name');
+            $table->timestamp('scheduled_at')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->constrained()->nullable();
             $table->timestamps();
         });
     }

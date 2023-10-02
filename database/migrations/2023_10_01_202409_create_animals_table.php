@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('farm_id')->constrained();
+            $table->foreignId('breed_id')->constrained();
+            $table->json('parents')->nullable();
+            $table->timestamp('dob')->nullable();
+            $table->date('date_of_weaning')->nullable();
             $table->timestamps();
         });
     }

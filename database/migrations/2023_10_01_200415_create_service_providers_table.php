@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('owner_profile')->nullable();
             $table->text('class_of_service')->nullable();
             $table->date('date_of_registration')->nullable();
-            $table->strimg('physical_address')->nullable();
+            $table->string('physical_address')->nullable();
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->string('email')->nullable();

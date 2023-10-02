@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('animal_health_records', function (Blueprint $table) {
             $table->id();
+            $table->string('record_type');
+            $table->foreignId('animal_id')->constrained();
+            $table->text('diagnosis')->nullable();
+            $table->text('treatment')->nullable();
+            $table->foreignId('user_id')->constrained()->nullable();
             $table->timestamps();
         });
     }

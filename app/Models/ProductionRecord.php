@@ -18,4 +18,9 @@ class ProductionRecord extends Model
     {
         return $this->belongsTo(User::class, 'recorded_by');
     }
+
+    public function breed()
+    {
+        return $this->belongsTo(Breed::class);
+    }
 }

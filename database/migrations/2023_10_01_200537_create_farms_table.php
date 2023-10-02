@@ -20,8 +20,8 @@ return new class extends Migration
             $table->date('date_of_establishment')->nullable();
             $table->string('size')->nullable();
             $table->string('profile_picture')->nullable();
-            $table->number('number_of_livestock')->nullable();
-            $table->number('number_of_workers')->nullable();
+            $table->integer('number_of_livestock')->nullable();
+            $table->integer('number_of_workers')->nullable();
             $table->string('land_ownership')->nullable();
             $table->text('general_remarks')->nullable();
             $table->timestamps();
