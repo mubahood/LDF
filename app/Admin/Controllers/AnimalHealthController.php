@@ -70,10 +70,14 @@ class AnimalHealthController extends AdminController
         $form = new Form(new AnimalHealthRecord());
 
         $form->text('record_type', __('Record type'));
-        $form->number('animal_id', __('Animal id'));
+        $form->select('animal_id', __('Select Animal'))->options(\App\Models\Animal::pluck('id', 'id'));
         $form->textarea('diagnosis', __('Diagnosis'));
         $form->textarea('treatment', __('Treatment'));
-        $form->number('user_id', __('User id'));
+        $form->hidden('user_id')->value(auth()->user()->id);
+
+        $form->saving(function (Form $form) {
+            $form->user_id = auth()->user()->id;
+        });
 
         return $form;
     }

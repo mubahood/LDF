@@ -69,8 +69,8 @@ class AnimalController extends AdminController
     {
         $form = new Form(new Animal());
 
-        $form->number('farm_id', __('Farm id'));
-        $form->number('breed_id', __('Breed id'));
+        $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'));
+        $form->select('breed_id', __('Select Breed'))->options(\App\Models\Breed::pluck('name', 'id'));
         $form->text('parents', __('Parents'));
         $form->datetime('dob', __('Dob'))->default(date('Y-m-d H:i:s'));
         $form->date('date_of_weaning', __('Date of weaning'))->default(date('Y-m-d'));
