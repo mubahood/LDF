@@ -77,8 +77,8 @@ class ProductionController extends AdminController
     {
         $form = new Form(new ProductionRecord());
 
-        $form->number('breed_id', __('Breed id'));
-        $form->number('farm_id', __('Farm id'));
+        $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'));
+        $form->select('breed_id', __('Select Breed'))->options(\App\Models\Breed::pluck('name', 'id'));
         $form->text('production_type', __('Production type'));
         $form->text('weight', __('Weight'));
         $form->text('daily_weight_gain', __('Daily weight gain'));

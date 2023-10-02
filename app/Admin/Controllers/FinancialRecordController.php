@@ -83,8 +83,9 @@ class FinancialRecordController extends AdminController
     {
         $form = new Form(new FinancialRecord());
 
-        $form->number('farm_id', __('Farm id'));
-        $form->number('farmer_id', __('Farmer id'));
+        // $form->number('farm_id', __('Farm id'));
+        $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'));
+        // $form->number('farmer_id', __('Farmer id'));
         $form->text('transaction_type', __('Transaction type'));
         $form->date('transaction_date', __('Transaction date'))->default(date('Y-m-d'));
         $form->textarea('description', __('Description'));

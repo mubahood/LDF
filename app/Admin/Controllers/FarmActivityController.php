@@ -69,11 +69,15 @@ class FarmActivityController extends AdminController
     {
         $form = new Form(new FarmActivity());
 
-        $form->number('farm_id', __('Farm id'));
+        $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'));
         $form->text('name', __('Name'));
         $form->datetime('scheduled_at', __('Scheduled at'))->default(date('Y-m-d H:i:s'));
         $form->textarea('description', __('Description'));
-        $form->number('user_id', __('User id'));
+        $form->hidden('user_id')->default(auth()->user()->id);
+
+        $form->saving(function (Form $form) {
+            $form->user_id = auth()->user()->id;
+        });
 
         return $form;
     }
