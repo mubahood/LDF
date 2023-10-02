@@ -14,5 +14,18 @@ class Farmer extends Model
         return $this->hasMany(Farm::class);
     }
 
-    
+    public function statuses()
+    {
+        return $this->morphMany(Status::class, 'statusable');
+    }
+
+    public function latestStatus()
+    {
+        return $this->morphOne(Status::class, 'statusable')->latestOfMany();
+    }
+
+    public function profilePhoto()
+    {
+        return $this->morphOne(Media::class, 'mediaable');
+    }
 }
