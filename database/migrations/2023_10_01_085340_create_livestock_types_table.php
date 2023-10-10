@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('breeds', function (Blueprint $table) {
+        Schema::create('livestock_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('livestock_type_id')->constrained('livestock_types')->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->string('image')->nullable();
+            $table->json('images')->nullable();
             $table->timestamps();
         });
     }
@@ -27,7 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('breeds');
-        Schema::enableForeignKeyConstraints();
+        Schema::dropIfExists('livestock_types');
+        Schema::enableForeignKeyConstraints()
     }
 };

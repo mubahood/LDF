@@ -2,20 +2,20 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Breed;
+use App\Models\LivestockType;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class BreedController extends AdminController
+class LivestockTypeController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Breed';
+    protected $title = 'LivestockType';
 
     /**
      * Make a grid builder.
@@ -24,13 +24,12 @@ class BreedController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Breed());
+        $grid = new Grid(new LivestockType());
 
         // $grid->column('id', __('Id'));
-        $grid->livestockType()->name('Livestock Type');
         $grid->column('name', __('Name'));
         $grid->column('description', __('Description'));
-        // $grid->column('image', __('Image'));
+        // $grid->column('images', __('Images'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
@@ -45,15 +44,12 @@ class BreedController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Breed::findOrFail($id));
+        $show = new Show(LivestockType::findOrFail($id));
 
-        // $show->field('id', __('Id'));
-        $show->field('livestock_type_name', __('Livestock Type'))->as(function ($livestock_type_name) {
-            return $this->livestockType->name;
-        });
+        $show->field('id', __('Id'));
         $show->field('name', __('Name'));
         $show->field('description', __('Description'));
-        $show->field('image', __('Image'));
+        $show->field('images', __('Images'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -67,13 +63,11 @@ class BreedController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Breed());
+        $form = new Form(new LivestockType());
 
-        $form->select('livestock_type_id', __('Livestock Type'))->options(\App\Models\LivestockType::all()->pluck('name', 'id'));
         $form->text('name', __('Name'));
+        $form->multipleImage('images', __('Images'))->removable();
         $form->textarea('description', __('Description'));
-        $form->image('image', __('Image'));
-
         return $form;
     }
 }
