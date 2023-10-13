@@ -27,6 +27,7 @@ class ServiceProviderController extends AdminController
         $grid = new Grid(new ServiceProvider());
 
         $grid->column('id', __('Id'));
+        $grid->column('logo', __('Logo'))->image();
         $grid->column('name', __('Name'));
         $grid->column('owner_name', __('Owner name'));
         $grid->column('owner_profile', __('Owner profile'));
@@ -38,13 +39,10 @@ class ServiceProviderController extends AdminController
         $grid->column('email', __('Email'));
         $grid->column('postal_address', __('Postal address'));
         $grid->column('other_services', __('Other services'));
-        $grid->column('logo', __('Logo'));
-        $grid->column('distroict_of_operation', __('Distroict of operation'));
-        $grid->column('NDA_registration_number', __('NDA registration number'));
+        $grid->column('distroict_of_operation', __('District of operation'));
+        // $grid->column('NDA_registration_number', __('NDA registration number'));
         $grid->column('tin_number_business', __('Tin number business'));
         $grid->column('tin_number_owner', __('Tin number owner'));
-        $grid->column('license', __('License'));
-        $grid->column('other_documents', __('Other documents'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
@@ -95,24 +93,24 @@ class ServiceProviderController extends AdminController
     {
         $form = new Form(new ServiceProvider());
 
-        $form->text('name', __('Name'));
-        $form->text('owner_name', __('Owner name'));
-        $form->textarea('owner_profile', __('Owner profile'));
-        $form->textarea('class_of_service', __('Class of service'));
-        $form->date('date_of_registration', __('Date of registration'))->default(date('Y-m-d'));
-        $form->text('physical_address', __('Physical address'));
-        $form->text('primary_phone_number', __('Primary phone number'));
+        $form->text('name', __('Name'))->rules('required');
+        $form->text('owner_name', __('Owner name'))->rules('required');
+        $form->textarea('owner_profile', __('Owner profile'))->rules('required');
+        $form->textarea('class_of_service', __('Class of service'))->rules('required');
+        $form->date('date_of_registration', __('Date of registration'))->rules('required|before_or_equal:today');
+        $form->text('physical_address', __('Physical address'))->rules('required');
+        $form->text('primary_phone_number', __('Primary phone number'))->rules('required');
         $form->text('secondary_phone_number', __('Secondary phone number'));
         $form->email('email', __('Email'));
         $form->text('postal_address', __('Postal address'));
         $form->text('other_services', __('Other services'));
-        $form->text('logo', __('Logo'));
-        $form->text('distroict_of_operation', __('Distroict of operation'));
-        $form->text('NDA_registration_number', __('NDA registration number'));
-        $form->text('tin_number_business', __('Tin number business'));
-        $form->text('tin_number_owner', __('Tin number owner'));
-        $form->text('license', __('License'));
-        $form->text('other_documents', __('Other documents'));
+        $form->image('logo', __('Logo'));
+        $form->text('distroict_of_operation', __('District of operation'))->help('District of operation - sub county')->rules('required');
+        $form->text('tin_number_business', __('Tin number business'))->rules('required');
+        $form->text('tin_number_owner', __('Tin number owner'))->rules('required');
+        $form->file('NDA_registration_number', __('NDA registration number'))->rules('required');
+        $form->file('license', __('License'))->rules('required');
+        $form->multipleFile('other_documents', __('Other documents'));
 
         return $form;
     }
