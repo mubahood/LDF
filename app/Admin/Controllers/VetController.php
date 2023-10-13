@@ -99,26 +99,26 @@ class VetController extends AdminController
     {
         $form = new Form(new Vet());
 
-        $form->text('profile_picture', __('Profile picture'));
-        $form->text('title', __('Title'));
-        $form->text('surname', __('Surname'));
-        $form->text('given_name', __('Given name'));
-        $form->text('nin', __('Nin'));
-        $form->text('physical_address', __('Physical address'));
-        $form->text('group_or_practice', __('Group or practice'));
-        $form->text('license_number', __('License number'));
-        $form->text('license_expiry_date', __('License expiry date'));
-        $form->text('date_of_registration', __('Date of registration'));
+        $form->image('profile_picture', __('Profile picture'));
+        $form->text('title', __('Title'))->rules('required');
+        $form->text('surname', __('Surname'))->rules('required');
+        $form->text('given_name', __('Given name'))->rules('required');
+        $form->text('nin', __('Nin'))->rules('required');
+        $form->text('physical_address', __('Physical address'))->rules('required');
+        $form->text('group_or_practice', __('Group or practice'))->rules('required');
+        $form->text('license_number', __('License number'))->rules('required');
+        $form->text('license_expiry_date', __('License expiry date'))->rules('required');
+        $form->text('date_of_registration', __('Date of registration'))->rules('required');
         $form->textarea('brief_profile', __('Brief profile'));
-        $form->text('primary_phone_number', __('Primary phone number'));
+        $form->text('primary_phone_number', __('Primary phone number'))->rules('required');
         $form->text('secondary_phone_number', __('Secondary phone number'));
-        $form->email('email', __('Email'));
+        $form->email('email', __('Email'))->rules('required');
         $form->text('postal_address', __('Postal address'));
-        $form->text('services_offered', __('Services offered'));
-        $form->text('ares_of_operation', __('Ares of operation'));
-        $form->text('certificate_of_registration', __('Certificate of registration'));
-        $form->text('license', __('License'));
-        $form->text('other_documents', __('Other documents'));
+        $form->textarea('services_offered', __('Services offered'))->rules('required');
+        $form->text('ares_of_operation', __('Ares of operation'))->rules('required');
+        $form->file('certificate_of_registration', __('Certificate of registration'))->rules('required');
+        $form->file('license', __('License'))->rules('required');
+        $form->multipleFile('other_documents', __('Other documents'));
 
         return $form;
     }
