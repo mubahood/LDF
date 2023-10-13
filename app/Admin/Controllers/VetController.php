@@ -27,7 +27,7 @@ class VetController extends AdminController
         $grid = new Grid(new Vet());
 
         $grid->column('id', __('Id'));
-        $grid->column('profile_picture', __('Profile picture'));
+        $grid->column('profile_picture', __('Profile picture'))->image();
         $grid->column('title', __('Title'));
         $grid->column('surname', __('Surname'));
         $grid->column('given_name', __('Given name'));
@@ -44,9 +44,6 @@ class VetController extends AdminController
         $grid->column('postal_address', __('Postal address'));
         $grid->column('services_offered', __('Services offered'));
         $grid->column('ares_of_operation', __('Ares of operation'));
-        $grid->column('certificate_of_registration', __('Certificate of registration'));
-        $grid->column('license', __('License'));
-        $grid->column('other_documents', __('Other documents'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
