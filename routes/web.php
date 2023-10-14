@@ -13,3 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::view('auth/register', 'auth.register');

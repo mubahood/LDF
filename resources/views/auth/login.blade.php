@@ -14,11 +14,11 @@
         <div class="position-relative mb-4">
             <label for="email" class="form-label fs-base">Email</label>
             <input type="text" id="email" class="form-control form-control-lg"
-                placeholder="{{ trans('admin.username') }}" name="username" value="{{ old('username') }}" required>
+                placeholder="Email" name="email" value="{{ old('email') }}" required>
 
 
-            @if ($errors->has('username'))
-                @foreach ($errors->get('username') as $message)
+            @if ($errors->has('email'))
+                @foreach ($errors->get('email') as $message)
                     <div class="invalid-feedback position-absolute start-0 top-100 d-block mb-2">
                         {{ $message }}
                     </div>
@@ -47,8 +47,9 @@
 
         <button type="submit" class="btn  btn-lg my-btn-primary  w-100">Sign in</button>
     </form>
-    {{-- <a href="{{ url('password-forget-email') }}" class="btn btn-link btn-lg w-100">Forgot your
-    password?</a> --}}
+    <a href="{{ url('password-forget-email') }}" class="btn btn-link btn-lg w-100">Forgot your
+    password?</a>
+    <a href="{{ url('auth/register') }}" class="btn btn-link btn-lg w-100">Not a member?  Register with us</a>
 
 
 

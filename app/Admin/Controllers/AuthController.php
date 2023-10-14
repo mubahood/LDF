@@ -5,8 +5,7 @@ namespace App\Admin\Controllers;
 use Encore\Admin\Controllers\AuthController as BaseAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Encore\Admin\Auth\Database\Administrator;
-
+use App\Models\User;
 
 class AuthController extends BaseAuthController
 {
@@ -69,46 +68,34 @@ class AuthController extends BaseAuthController
                     ->withInput();
             }
 
-            $u = Administrator::where([
-                'email' => $_POST['email']
-            ])->orwhere([
-                'username' => $_POST['email']
-            ])->first(); 
+        
+            $user = new User();
+            $user->username = $r->email;
+            $user->email = $r->email;
+            $user->name = $r->name;
+            //$user->avatar = 'user.png';
+            $user->password = password_hash($r->password, PASSWORD_DEFAULT);
 
-
-            if ($u != null) {
-                $u->username = $r->email;
-                $u->email = $r->email;
-                $u->password = password_hash($r->password, PASSWORD_DEFAULT);
-                $u->save();
-            } else {
-                $admin = new Administrator();
-                $admin->username = $r->email;
-                $admin->email = $r->email;
-                $admin->name = $r->name;
-                //$admin->avatar = 'user.png';
-                $admin->password = password_hash($r->password, PASSWORD_DEFAULT);
-
-                if (!$admin->save()) {
-                    return back()
-                        ->withErrors(['email' => 'Failed to create account. Try again.'])
-                        ->withInput();
-                }
+            if (!$user->save()) {
+                return back()
+                    ->withErrors(['email' => 'Failed to create account. Try again.'])
+                    ->withInput();
             }
+            $user->assignRole('basic-user');
         }else {
             // LOGIN
-            // $u = Administrator::where([
+            // $u = User::where([
             //     'email' => $_POST['email']
             // ])->orwhere([
             //     'username' => $_POST['email']
             // ])->first();
-            $u = Administrator::where([
-                'username' => $r->input('username')
+            $u = User::where([
+                'email' => $r->input('email')
             ])->first();
     
             if ($u == null) {
                 return back()
-                    ->withErrors(['username' => 'Account with provided email address was not found.'])
+                    ->withErrors(['email' => 'Account with provided email address was not found.'])
                     ->withInput();
             }
         }
@@ -126,7 +113,7 @@ class AuthController extends BaseAuthController
         //     return $this->sendLoginResponse($request);
         // }
 
-        $credentials['username'] = $request->username;
+        $credentials['username'] = $request->email;
         $credentials['password'] = $request->password;
         $remember = true;
 
@@ -136,7 +123,7 @@ class AuthController extends BaseAuthController
 
 
         return back()
-            ->withErrors(['username' => 'Wrong Credentials. Try again.'])
+            ->withErrors(['email' => 'Wrong Credentials. Try again.'])
             ->withInput();
     }
 }
