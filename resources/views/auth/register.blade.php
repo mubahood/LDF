@@ -79,10 +79,10 @@
             </div>
         </div>
 
-        <button type="submit" class="btn  btn-lg my-btn-primary  w-100">Sign in</button>
+        <button type="submit" class="btn  btn-lg my-btn-primary  w-100">Register</button>
     </form>
-    {{-- <a href="{{ url('password-forget-email') }}" class="btn btn-link btn-lg w-100">Forgot your
-    password?</a> --}}
+
+    <a href="{{ url('auth/login') }}" class="btn btn-link btn-lg w-100">Already a member! Sign in</a>
 
 
 
