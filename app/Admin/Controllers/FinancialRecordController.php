@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Carbon\Carbon;
+
 
 class FinancialRecordController extends AdminController
 {
@@ -39,8 +41,20 @@ class FinancialRecordController extends AdminController
         $grid->column('payment_reference', __('Payment reference'));
         $grid->column('reciept_file', __('Reciept file'));
         $grid->column('remarks', __('Remarks'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
+        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
 
         return $grid;
     }

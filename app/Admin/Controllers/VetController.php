@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Carbon\Carbon;
+
 
 class VetController extends AdminController
 {
@@ -44,8 +46,20 @@ class VetController extends AdminController
         $grid->column('postal_address', __('Postal address'));
         $grid->column('services_offered', __('Services offered'));
         $grid->column('ares_of_operation', __('Ares of operation'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
+        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
 
         return $grid;
     }

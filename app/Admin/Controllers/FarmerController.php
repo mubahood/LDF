@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Carbon\Carbon;
+
 
 class FarmerController extends AdminController
 {
@@ -66,8 +68,20 @@ class FarmerController extends AdminController
         });
         $grid->column('date_started_farming', __('Date started farming'));
         $grid->column('highest_level_of_education', __('Highest level of education'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
+        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
 
         return $grid;
     }

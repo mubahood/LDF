@@ -7,6 +7,8 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Carbon\Carbon;
+
 
 class LivestockTypeController extends AdminController
 {
@@ -30,8 +32,20 @@ class LivestockTypeController extends AdminController
         $grid->column('name', __('Name'));
         $grid->column('description', __('Description'));
         // $grid->column('images', __('Images'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
+        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
 
         return $grid;
     }
@@ -65,7 +79,7 @@ class LivestockTypeController extends AdminController
     {
         $form = new Form(new LivestockType());
 
-        $form->text('name', __('Name'));
+        $form->text('name', __('Name'))->required();
         $form->multipleImage('images', __('Images'))->removable();
         $form->textarea('description', __('Description'));
         return $form;

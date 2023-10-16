@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Carbon\Carbon;
 
 class FarmController extends AdminController
 {
@@ -25,21 +26,43 @@ class FarmController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Farm());
-
-        $grid->column('id', __('Id'));
+        $grid->column('profile_picture', __('Profile picture'))->image();
         $grid->column('name', __('Name'));
         $grid->column('location', __('Location'));
-        $grid->column('livestock_type', __('Livestock type'));
         $grid->column('production_type', __('Production type'));
         $grid->column('date_of_establishment', __('Date of establishment'));
-        $grid->column('size', __('Size'));
-        $grid->column('profile_picture', __('Profile picture'));
-        $grid->column('number_of_livestock', __('Number of livestock'));
+        $grid->column('breeds', __('Breeds'))
+        ->display(
+            function ($x) {
+                //breeds in badges
+                if ($this->breeds()->count() > 0) {
+                    $breeds = $this->breeds->map(function ($item) {
+                        return  $item->name;
+                    })->toArray();
+                    return join(', ', $breeds);
+                } else {
+                    return '-';
+                }
+            }
+        );
+        $grid->column('size', __('Size (acres)'));
         $grid->column('number_of_workers', __('Number of workers'));
         $grid->column('land_ownership', __('Land ownership'));
         $grid->column('general_remarks', __('General remarks'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
+        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
 
         return $grid;
     }
@@ -81,16 +104,16 @@ class FarmController extends AdminController
     {
         $form = new Form(new Farm());
 
-        $form->text('name', __('Name'));
-        $form->text('location', __('Location'));
-        $form->text('livestock_type', __('Livestock type'));
-        $form->text('production_type', __('Production type'));
-        $form->date('date_of_establishment', __('Date of establishment'))->default(date('Y-m-d'));
-        $form->text('size', __('Size'));
-        $form->text('profile_picture', __('Profile picture'));
-        $form->number('number_of_livestock', __('Number of livestock'));
+        $form->image('profile_picture', __('Profile picture'));
+        $form->text('name', __('Name'))->rules('required');
+        $form->text('location', __('Location'))->rules('required');
+        $form->multipleSelect('breeds', __('Select Breeds'))->options(\App\Models\Breed::pluck('name', 'id'));
+        $form->text('production_type', __('Production type'))->rules('required')->help('e.g. Dairy, Beef, Eggs, etc.');
+        $form->date('date_of_establishment', __('Date of establishment'))->default(date('Y-m-d'))->rules('required|before_or_equal:today');
+        $form->text('size', __('Size'))->rules('required')->help('e.g. 10 acres, 20 acres, etc.');
+        // $form->number('number_of_livestock', __('Number of livestock'));
         $form->number('number_of_workers', __('Number of workers'));
-        $form->text('land_ownership', __('Land ownership'));
+        $form->radio('land_ownership', __('Do you own the Farm land?'))->options(['Yes' => 'Yes', 'No' => 'No'])->default('Yes');
         $form->textarea('general_remarks', __('General remarks'));
 
         return $form;

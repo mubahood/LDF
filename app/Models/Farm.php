@@ -19,6 +19,11 @@ class Farm extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    public function breeds()
+    {
+        return $this->belongsToMany(Breed::class);
+    }
+
     public function productionRecords()
     {
         return $this->hasMany(ProductionRecord::class);

@@ -7,6 +7,7 @@ use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
+use Carbon\Carbon;
 
 class BreedController extends AdminController
 {
@@ -31,8 +32,20 @@ class BreedController extends AdminController
         $grid->column('name', __('Name'));
         $grid->column('description', __('Description'));
         // $grid->column('image', __('Image'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('created_at', __('Created at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
+        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
 
         return $grid;
     }
@@ -69,8 +82,8 @@ class BreedController extends AdminController
     {
         $form = new Form(new Breed());
 
-        $form->select('livestock_type_id', __('Livestock Type'))->options(\App\Models\LivestockType::all()->pluck('name', 'id'));
-        $form->text('name', __('Name'));
+        $form->select('livestock_type_id', __('Livestock Type'))->options(\App\Models\LivestockType::all()->pluck('name', 'id'))->rules('required');
+        $form->text('name', __('Name'))->rules('required');
         $form->textarea('description', __('Description'));
         $form->image('image', __('Image'));
 

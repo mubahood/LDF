@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('livestock_types', function (Blueprint $table) {
+        Schema::create('breed_farm', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->json('images')->nullable();
+            $table->foreignId('breed_id')->constrained()->onDelete('cascade');
+            $table->foreignId('farm_id')->constrained()->onDelete('cascade');
+            $table->integer('number_of_livestock')->nullable();
             $table->timestamps();
         });
     }
@@ -25,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('livestock_types');
-        Schema::enableForeignKeyConstraints();
+        Schema::dropIfExists('breed_farm');
     }
 };
