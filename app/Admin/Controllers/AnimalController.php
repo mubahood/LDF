@@ -29,8 +29,8 @@ class AnimalController extends AdminController
         $grid = new Grid(new Animal());
 
         $grid->column('id', __('Id'));
-        $grid->column('farm_id', __('Farm id'));
-        $grid->column('breed_id', __('Breed id'));
+        $grid->farm()->name('Farm');
+        $grid->breed()->name('Breed');
         $grid->column('parents', __('Parents'));
         $grid->column('dob', __('Dob'));
         $grid->column('date_of_weaning', __('Date of weaning'));
@@ -83,9 +83,9 @@ class AnimalController extends AdminController
     {
         $form = new Form(new Animal());
 
-        $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'));
-        $form->select('breed_id', __('Select Breed'))->options(\App\Models\Breed::pluck('name', 'id'));
-        $form->text('parents', __('Parents'));
+        $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'))->rules('required');
+        $form->select('breed_id', __('Select Breed'))->options(\App\Models\Breed::pluck('name', 'id'))->rules('required');
+        $form->text('parents', __('Parents')); //TODO: Add a select2 dropdown for this
         $form->datetime('dob', __('Dob'))->default(date('Y-m-d H:i:s'));
         $form->date('date_of_weaning', __('Date of weaning'))->default(date('Y-m-d'));
 
