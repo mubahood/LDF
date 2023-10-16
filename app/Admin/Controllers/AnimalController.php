@@ -86,8 +86,8 @@ class AnimalController extends AdminController
         $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'))->rules('required');
         $form->select('breed_id', __('Select Breed'))->options(\App\Models\Breed::pluck('name', 'id'))->rules('required');
         $form->text('parents', __('Parents')); //TODO: Add a select2 dropdown for this
-        $form->datetime('dob', __('Dob'))->default(date('Y-m-d H:i:s'));
-        $form->date('date_of_weaning', __('Date of weaning'))->default(date('Y-m-d'));
+        $form->datetime('dob', __('Dob'));
+        $form->date('date_of_weaning', __('Date of weaning'));
 
         return $form;
     }
