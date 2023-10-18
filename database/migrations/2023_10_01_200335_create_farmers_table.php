@@ -30,6 +30,15 @@ return new class extends Migration
             $table->boolean('access_to_credit')->default(false);
             $table->date('date_started_farming')->nullable();
             $table->string('highest_level_of_education')->nullable();
+            $table->unsignedInteger('applicatant_id')->nullable();
+            $table->foreign('applicatant_id')->references('id')->on('admin_users');
+            $table->boolean('is_verified')->default(false);
+            $table->text('agent_remarks')->nullable();
+            $table->unsignedInteger('agent_id')->nullable();
+            $table->foreign('agent_id')->references('id')->on('admin_users');
+            $table->text('admin_remarks')->nullable();
+            $table->unsignedInteger('admin_id')->nullable();
+            $table->foreign('admin_id')->references('id')->on('admin_users');
             $table->timestamps();
         });
     }
@@ -39,6 +48,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('farmers');
+
+        Schema::enableForeignKeyConstraints();
     }
 };

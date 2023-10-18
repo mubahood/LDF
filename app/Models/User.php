@@ -10,6 +10,13 @@ use App\Models\AdminRole;
 
 class User extends Administrator
 {
+    public static function getAgents()
+    {
+        return User::whereHas('roles', function ($query) {
+            $query->where('slug', 'agent');
+        })->get();
+    }
+
     public function assignRole(String $role, bool $clearPrevious = true)
     {
         $role = AdminRole::where('slug', $role)->first();
@@ -21,5 +28,10 @@ class User extends Administrator
             'role_id' => $role->id,
             'user_id' => $this->id
         ]);
+    }
+
+    public function farmersInspected()
+    {
+        return $this->hasMany(Farmer::class, 'agent_id');
     }
 }

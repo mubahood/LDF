@@ -12,6 +12,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('home');
+    $router->resource('users', UserController::class);
     $router->resource('farms', FarmController::class);
     $router->resource('farmers', FarmerController::class);
     $router->resource('breeds', BreedController::class);

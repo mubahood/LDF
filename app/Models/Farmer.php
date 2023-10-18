@@ -9,6 +9,8 @@ class Farmer extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function farms()
     {
         return $this->hasMany(Farm::class);
@@ -27,5 +29,10 @@ class Farmer extends Model
     public function profilePhoto()
     {
         return $this->morphOne(Media::class, 'mediaable');
+    }
+
+    public function inspectingAgent()
+    {
+        return $this->belongsTo(User::class, 'agent_id');
     }
 }

@@ -2,13 +2,13 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\Farmer\Inspect;
 use App\Models\Farmer;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Carbon\Carbon;
-
 
 class FarmerController extends AdminController
 {
@@ -27,8 +27,21 @@ class FarmerController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Farmer());
+        
+        $grid->actions(function ($actions) {
+            if($actions->row->agent_id == null ) {
+                $actions->add(new Inspect);
+            }
+        });
+
+        $grid->model()->latest();
 
         $grid->column('id', __('Id'));
+        $grid->column('is_verified', __('Is verified'))->display(function ($is_verified) {
+            return $is_verified == 1 ? 'Yes' : 'No';
+        });
+        $grid->inspectingAgent()->name('Inspecting Agent');
+
         $grid->column('profile_picture', __('Profile picture'))->image();
         $grid->column('surname', __('Surname'));
         $grid->column('given_name', __('Given name'));
@@ -146,7 +159,14 @@ class FarmerController extends AdminController
         $form->radio('access_to_credit', __('Access to credit'))->options(['1'=> 'Yes', '0' => 'No'])->rules('required');
         $form->date('date_started_farming', __('Date started farming'))->default(date('Y-m-d'))->rules('required|before_or_equal:today');
         $form->text('highest_level_of_education', __('Highest level of education'));
+        $form->hidden('applicatant_id')->default(auth()->user()->id);
 
+
+        $form->saving(function (Form $form) {
+            if($form->isCreating()) {
+                $form->applicatant_id = auth()->user()->id;
+            }
+        });
         return $form;
     }
 }
