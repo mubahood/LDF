@@ -118,8 +118,8 @@ class VetController extends AdminController
         $form->text('physical_address', __('Physical address'))->rules('required');
         $form->text('group_or_practice', __('Group or practice'))->rules('required');
         $form->text('license_number', __('License number'))->rules('required');
-        $form->text('license_expiry_date', __('License expiry date'))->rules('required');
-        $form->text('date_of_registration', __('Date of registration'))->rules('required');
+        $form->date('license_expiry_date', __('License expiry date'))->rules('required');
+        $form->date('date_of_registration', __('Date of registration'))->rules('required');
         $form->textarea('brief_profile', __('Brief profile'));
         $form->text('primary_phone_number', __('Primary phone number'))->rules('required');
         $form->text('secondary_phone_number', __('Secondary phone number'));

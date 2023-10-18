@@ -22,7 +22,6 @@ class ApproveOrDeny extends RowAction
             ]);
         } else if(Admin::user()->isRole('agent')) {
             $this->textarea('agent_remarks', 'Remarks');
-            $this->hidden('is_verified')->default(0);
         }else {
             $this->select('is_verified', 'Approve Application')->options([
                 1 => 'Approve',
@@ -37,8 +36,13 @@ class ApproveOrDeny extends RowAction
     {
         $is_verified = $request->get('is_verified');
         $agent_remarks = $request->get('agent_remarks');
+
+        if (Admin::user()->isRole('agent')) {
+            $model->is_verified = 0;
+        }else{
+            $model->is_verified = $is_verified;
+        }
         
-        $model->is_verified = $is_verified;
         $model->agent_remarks = $agent_remarks;
         $model->save();
 
