@@ -43,7 +43,7 @@ class FarmerController extends AdminController
                 }
             }
             if ($current_user->isRole('agent')) {
-                if ($actions->row->is_verified == 0 && $actions->row->agent_id == $current_user->id) {
+                if ($actions->row->is_verified == 0 && $actions->agent_remarks == null && $actions->row->agent_id == $current_user->id) {
                     $actions->add(new ApproveOrDeny);
                 }
             }
@@ -184,18 +184,46 @@ class FarmerController extends AdminController
         $form->text('given_name', __('Given name'))->rules('required');
         $form->date('date_of_birth', __('Date of birth'))->rules('required|before:today');
         $form->text('nin', __('Nin'))->rules('required');
-        $form->text('physical_address', __('Physical address'))->help('District-village')->rules('required');
+        $form->text('physical_address', __('Physical address'))->help('District-village')->rules('required'); //TODO: Use district parish model
         $form->radio('gender', __('Gender'))->options(['M'=> 'Male', 'F' => 'Female'])->rules('required');
         $form->radio('marital_status', __('Marital status'))->options(['S'=> 'Single', 'M' => 'Married', 'D' => 'Divorced', 'W' => 'Widowed'])->rules('required');
         $form->text('number_of_dependants', __('Number of dependants'))->rules('required|numeric');
         $form->text('farmer_group', __('Farmer group'))->rules('required');
-        $form->text('primary_phone_number', __('Primary phone number'))->rules('required');
-        $form->text('secondary_phone_number', __('Secondary phone number'));
-        $form->radio('is_land_owner', __('Do you own land ?'))->options(['1'=> 'Yes', '0' => 'No'])->rules('required');
-        $form->text('production_scale', __('Production scale'));
-        $form->radio('access_to_credit', __('Access to credit'))->options(['1'=> 'Yes', '0' => 'No'])->rules('required');
-        $form->date('date_started_farming', __('Date started farming'))->default(date('Y-m-d'))->rules('required|before_or_equal:today');
-        $form->text('highest_level_of_education', __('Highest level of education'));
+        $form->text('primary_phone_number', __('Phone number'))->rules('required');
+        $form->text('secondary_phone_number', __('Other phone number'));
+        $form->radio('is_land_owner', __('Do you own land ?'))->options([1=> 'Yes', 0 => 'No'])
+            ->when(0, function (Form $form) {
+                $form->select('land_ownership', __('Land ownership'))->options([
+                    'Lease' => 'Lease',
+                    'Rent' => 'Rent',
+                    'Own' => 'Own',
+                    'Other' => 'Other'
+                ]);
+            })
+            ->rules('required');
+        $form->select('production_scale', __('Production Type'))->options([
+            'Small scale' => 'Small scale',
+            'Medium scale' => 'Medium scale',
+            'Large scale' => 'Large scale',
+            'Commercial scale' => 'Commercial scale',
+            'Other' => 'Other'
+        ]);
+        $form->radio('access_to_credit', __('Have you ever gotten credit?'))->options(['1'=> 'Yes', '0' => 'No'])
+            ->when(1, function (Form $form) {
+                $form->text('credit_institution', __('Credit institution'))->rules('required');
+            })
+        ->rules('required');
+        $form->date('date_started_farming', __('Which year did you start farming?'))->default(date('Y'))->format('YYYY')->rules('required|before_or_equal:today');
+        $form->select('highest_level_of_education', __('Highest level of education'))
+            ->options([
+                'None' => 'None',
+                'Primary' => 'Primary',
+                'Secondary' => 'Secondary',
+                'Tertiary' => 'Tertiary',
+                'Bachelor' => 'Bachelor',
+                'Masters' => 'Masters',
+                'PhD' => 'PhD',
+            ])->rules('required');
         $form->hidden('applicatant_id')->default(auth()->user()->id);
 
 

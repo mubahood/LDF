@@ -24,6 +24,8 @@ return new class extends Migration
             $table->integer('number_of_workers')->nullable();
             $table->string('land_ownership')->nullable();
             $table->text('general_remarks')->nullable();
+            $table->unsignedInteger('owner_id')->nullable();
+            $table->foreign('owner_id')->references('id')->on('admin_users');
             $table->timestamps();
         });
     }

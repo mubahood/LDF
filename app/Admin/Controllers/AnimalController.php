@@ -79,14 +79,14 @@ class AnimalController extends AdminController
      *
      * @return Form
      */
-    protected function form()
+    protected function form()   
     {
         $form = new Form(new Animal());
 
         $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'))->rules('required');
         $form->select('breed_id', __('Select Breed'))->options(\App\Models\Breed::pluck('name', 'id'))->rules('required');
         $form->text('parents', __('Parents')); //TODO: Add a select2 dropdown for this
-        $form->datetime('dob', __('Dob'));
+        $form->datetime('dob', __('Date Of Birth'));
         $form->date('date_of_weaning', __('Date of weaning'));
 
         return $form;
