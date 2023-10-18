@@ -34,19 +34,19 @@ class FarmerController extends AdminController
         $current_user = Auth::user();
 
         $grid->actions(function ($actions) use ($current_user) {
-            if($actions->row->agent_id == null ) {
-                $actions->add(new Inspect);
-            }else {
-                $actions->add(new ApproveOrDeny);
+            if($current_user->isRole('ldf_admin') || $current_user->isRole('administrator')) {
+                if ($actions->row->is_verified == 0 && $actions->row->agent_id == null) {
+                    $actions->add(new Inspect);
+                }
+                if ($actions->row->is_verified == 0 && $actions->row->agent_remarks != null) {
+                    $actions->add(new ApproveOrDeny);
+                }
             }
-
-                // if($actions->row->agent_id != null && $actions->row->agent_remarks != null) {
-                //     $actions->add(new ApproveOrDeny);
-                // }
-
-                // if($actions->row->agent_id != null && $actions->row->agent_id == $current_user->id && $actions->row->agent_remarks == null) {
-                //     $actions->add(new ApproveOrDeny);
-                // }
+            if ($current_user->isRole('agent')) {
+                if ($actions->row->is_verified == 0 && $actions->row->agent_id == $current_user->id) {
+                    $actions->add(new ApproveOrDeny);
+                }
+            }
         });
 
         $grid->filter(function ($f) {
@@ -68,6 +68,8 @@ class FarmerController extends AdminController
             $grid->model()->where('agent_id', $current_user->id)->latest();
         }else if($current_user->isRole('administrator')  || $current_user->isRole('ldf_admin')) {
             $grid->model()->latest();
+        }else {
+            $grid->model()->where('applicatant_id', $current_user->id)->latest();
         }
 
         $grid->column('id', __('Id'));

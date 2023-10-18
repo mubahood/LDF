@@ -11,6 +11,11 @@ class Farmer extends Model
 
     protected $guarded = [];
 
+    public function applicant()
+    {
+        return $this->belongsTo(User::class, 'applicatant_id'); //TODO("applicant_id instead of applicatant_id")
+    }
+
     public function farms()
     {
         return $this->hasMany(Farm::class);

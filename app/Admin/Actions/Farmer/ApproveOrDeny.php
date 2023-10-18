@@ -19,15 +19,15 @@ class ApproveOrDeny extends RowAction
             $this->select('is_verified', 'Approve Application')->options([
                 1 => 'Approve',
                 0 => 'Deny'
-            ])->rules('required');
+            ]);
         } else if(Admin::user()->isRole('agent')) {
-            $this->textarea('agent_remarks', 'Remarks')->rules('required');
+            $this->textarea('agent_remarks', 'Remarks');
             $this->hidden('is_verified')->default(0);
         }else {
             $this->select('is_verified', 'Approve Application')->options([
                 1 => 'Approve',
                 0 => 'Deny'
-            ])->rules('required');
+            ]);
         }   
 
 
@@ -41,6 +41,10 @@ class ApproveOrDeny extends RowAction
         $model->is_verified = $is_verified;
         $model->agent_remarks = $agent_remarks;
         $model->save();
+
+        //Promote applicant to farmer
+        $applicant = $model->applicant;
+        $applicant->assignRole('farmer');
 
         return $this->response()->success('Action taken successfully')->refresh();
     }
