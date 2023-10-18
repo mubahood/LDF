@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\Farmer\ApproveOrDeny;
 use App\Admin\Actions\Farmer\Inspect;
 use App\Models\Farmer;
 use Encore\Admin\Controllers\AdminController;
@@ -9,6 +10,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Carbon\Carbon;
+use Encore\Admin\Auth\Database\Administrator;
+use Illuminate\Support\Facades\Auth;
 
 class FarmerController extends AdminController
 {
@@ -28,13 +31,44 @@ class FarmerController extends AdminController
     {
         $grid = new Grid(new Farmer());
         
-        $grid->actions(function ($actions) {
+        $current_user = Auth::user();
+
+        $grid->actions(function ($actions) use ($current_user) {
             if($actions->row->agent_id == null ) {
                 $actions->add(new Inspect);
+            }else {
+                $actions->add(new ApproveOrDeny);
             }
+
+                // if($actions->row->agent_id != null && $actions->row->agent_remarks != null) {
+                //     $actions->add(new ApproveOrDeny);
+                // }
+
+                // if($actions->row->agent_id != null && $actions->row->agent_id == $current_user->id && $actions->row->agent_remarks == null) {
+                //     $actions->add(new ApproveOrDeny);
+                // }
         });
 
-        $grid->model()->latest();
+        $grid->filter(function ($f) {
+            $f->disableIdFilter();
+            $f->between('created_at', 'Filter by date')->date();
+            $f->where(function ($query) {
+                $query->where('surname', 'like', "%{$this->input}%")
+                    ->orWhere('given_name', 'like', "%{$this->input}%")
+                    ->orWhere('nin', 'like', "%{$this->input}%")
+                    ->orWhere('primary_phone_number', 'like', "%{$this->input}%")
+                    ->orWhere('secondary_phone_number', 'like', "%{$this->input}%");
+            }, 'Search by name, nin, phone number');
+            $f->equal('is_verified', 'Is verified')->select([0 => 'No', 1 => 'Yes']);
+
+        });
+
+
+        if($current_user->isRole('agent')) {
+            $grid->model()->where('agent_id', $current_user->id)->latest();
+        }else if($current_user->isRole('administrator')  || $current_user->isRole('ldf_admin')) {
+            $grid->model()->latest();
+        }
 
         $grid->column('id', __('Id'));
         $grid->column('is_verified', __('Is verified'))->display(function ($is_verified) {

@@ -18,7 +18,6 @@ class Inspect extends RowAction
     public function handle(Model $model, Request $request)
     {
         $agent_id = $request->get('agent_id');
-        error_log ("agent id :   $agent_id");
         $model->agent_id = $agent_id;
         $model->save();
 

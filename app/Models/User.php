@@ -30,6 +30,16 @@ class User extends Administrator
         ]);
     }
 
+    // public function hasRole(String $role) 
+    // {
+    //     $role = AdminRole::where('slug', $role)->first();
+    //     return DB::table('admin_role_users')->where([
+    //         'role_id' => $role->id,
+    //         'user_id' => $this->id
+    //     ])->exists();
+
+    // }
+
     public function farmersInspected()
     {
         return $this->hasMany(Farmer::class, 'agent_id');
