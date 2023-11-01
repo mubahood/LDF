@@ -130,7 +130,7 @@ class FarmController extends AdminController
         $form->number('number_of_workers', __('Number of workers'));
         $form->radio('land_ownership', __('Do you own the Farm land?'))->options(['Yes' => 'Yes', 'No' => 'No'])->default('Yes');
         $form->textarea('general_remarks', __('General remarks'));
-        $form->hidden('owner_id')->defaut(auth()->user()->id);
+        $form->hidden('owner_id');
 
         $form->saving(function (Form $form) {
             if($form->isCreating()) {
