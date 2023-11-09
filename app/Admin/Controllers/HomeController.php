@@ -18,6 +18,7 @@ class HomeController extends Controller
         $cooperations = \App\Models\Cooperation::count();
         $farms = \App\Models\Farm::count();
         $vets = \App\Models\Vet::count();
+        Admin::js('/adminlte/dist/js/pages/dashboard.js');
 
         return $content
             ->title('Dashboard')

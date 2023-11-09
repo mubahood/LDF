@@ -45,7 +45,6 @@ Admin::js('/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js
 Admin::js('/adminlte/plugins/slimScroll/jquery.slimscroll.min.js');
 // FastClick -->
 Admin::js('/adminlte/plugins/fastclick/fastclick.js');
-Admin::js('/adminlte/dist/js/pages/dashboard.js');
 
 
 // Font Awesome -->
