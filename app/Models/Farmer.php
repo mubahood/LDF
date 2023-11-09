@@ -16,6 +16,11 @@ class Farmer extends Model
         return $this->belongsTo(User::class, 'applicatant_id'); //TODO("applicant_id instead of applicatant_id")
     }
 
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
+
     public function farms()
     {
         return $this->hasMany(Farm::class);

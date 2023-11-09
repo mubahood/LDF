@@ -84,7 +84,7 @@ class FarmerController extends AdminController
         $grid->column('given_name', __('Given name'));
         $grid->column('date_of_birth', __('Date of birth'));
         $grid->column('nin', __('Nin'));
-        $grid->column('physical_address', __('Physical address'));
+        $grid->location()->name('Physical Address');
         $grid->column('gender', __('Gender'));
         $grid->column('marital_status', __('Marital status'))->display(function ($marital_status) {
             switch ($marital_status) {
@@ -152,7 +152,7 @@ class FarmerController extends AdminController
         $show->field('given_name', __('Given name'));
         $show->field('date_of_birth', __('Date of birth'));
         $show->field('nin', __('Nin'));
-        $show->field('physical_address', __('Physical address'));
+        $show->field('location_id', __('Physical address'));
         $show->field('gender', __('Gender'));
         $show->field('marital_status', __('Marital status'));
         $show->field('number_of_dependants', __('Number of dependants'));
@@ -184,7 +184,7 @@ class FarmerController extends AdminController
         $form->text('given_name', __('Given name'))->rules('required');
         $form->date('date_of_birth', __('Date of birth'))->rules('required|before:today');
         $form->text('nin', __('Nin'))->rules('required');
-        $form->text('physical_address', __('Physical address'))->help('District-village')->rules('required'); //TODO: Use district parish model
+        $form->select('location_id', __('Physical Address'))->options(\App\Models\Location::pluck('name', 'id'))->rules('required');
         $form->radio('gender', __('Gender'))->options(['M'=> 'Male', 'F' => 'Female'])->rules('required');
         $form->radio('marital_status', __('Marital status'))->options(['S'=> 'Single', 'M' => 'Married', 'D' => 'Divorced', 'W' => 'Widowed'])->rules('required');
         $form->text('number_of_dependants', __('Number of dependants'))->rules('required|numeric');
@@ -213,7 +213,7 @@ class FarmerController extends AdminController
                 $form->text('credit_institution', __('Credit institution'))->rules('required');
             })
         ->rules('required');
-        $form->date('date_started_farming', __('Which year did you start farming?'))->default(date('Y'))->format('YYYY')->rules('required|before_or_equal:today');
+        $form->date('date_started_farming', __('Which year did you start farming?'))->default(date('Y'))->format('YYYY')->rules('required');
         $form->select('highest_level_of_education', __('Highest level of education'))
             ->options([
                 'None' => 'None',

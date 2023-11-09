@@ -30,7 +30,7 @@ class FarmController extends AdminController
 
         $grid->filter(function ($f) {
             $f->like('name', 'Name');
-            $f->like('location', 'Location');
+            $f->like('location_id', 'Physical Address');
             $f->like('production_type', 'Production type');
             $f->between('created_at', 'Filter by date')->date();
         });
@@ -41,9 +41,17 @@ class FarmController extends AdminController
             $grid->model()->where('owner_id', Admin::user()->id)->latest();
         }
 
-        $grid->column('profile_picture', __('Profile picture'))->image();
+        $grid->column('created_at', __('Registered On'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
+
+        // $grid->column('profile_picture', __('Profile picture'))->image();
         $grid->column('name', __('Name'));
-        $grid->column('location', __('Location'));
+        $grid->location()->name('Physical Address');
         $grid->column('production_type', __('Production type'));
         $grid->column('date_of_establishment', __('Date of establishment'));
         $grid->column('breeds', __('Breeds'))
@@ -63,21 +71,14 @@ class FarmController extends AdminController
         $grid->column('size', __('Size (acres)'));
         $grid->column('number_of_workers', __('Number of workers'));
         $grid->column('land_ownership', __('Land ownership'));
-        $grid->column('general_remarks', __('General remarks'));
-        $grid->column('created_at', __('Created at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
-        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
+        $grid->column('no_land_ownership_reason', __('Type of land ownership'));
+         // $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+        //     $c = Carbon::parse($x);
+        // if ($x == null) {
+        //     return $x;
+        // }
+        // return $c->format('d M, Y');
+        // });
 
         return $grid;
     }
@@ -94,7 +95,7 @@ class FarmController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
-        $show->field('location', __('Location'));
+        $show->field('location_id', __('Physical Address'));
         $show->field('livestock_type', __('Livestock type'));
         $show->field('production_type', __('Production type'));
         $show->field('date_of_establishment', __('Date of establishment'));
@@ -121,14 +122,18 @@ class FarmController extends AdminController
 
         $form->image('profile_picture', __('Profile picture'));
         $form->text('name', __('Name'))->rules('required');
-        $form->text('location', __('Location'))->rules('required'); //TODO: Add [lat, lng] and physical
+        $form->text('coordinates', __('Coordinates'))->placeholder('lat, lng')->help('e.g. 0.000000, 0.000000');
+        $form->select('location_id', __('Physical Address'))->options(\App\Models\Location::pluck('name', 'id'))->rules('required');
         $form->multipleSelect('breeds', __('Select Breeds'))->options(\App\Models\Breed::pluck('name', 'id'));
         $form->text('production_type', __('Farm Type'))->rules('required')->help('e.g. Dairy, Beef, Eggs, etc.');
-        $form->date('date_of_establishment', __('Date of establishment'))->default(date('Y-m-d'))->format('YYYY')->rules('required|before_or_equal:today');
+        $form->date('date_of_establishment', __('Date of establishment'))->default(date('Y-m-d'))->format('YYYY')->rules('required');
         $form->text('size', __('Farm Size in acre'))->rules('required')->help('e.g. 10 acres, 20 acres, etc.');
         // $form->number('number_of_livestock', __('Number of livestock'));
         $form->number('number_of_workers', __('Number of workers'));
-        $form->radio('land_ownership', __('Do you own the Farm land?'))->options(['Yes' => 'Yes', 'No' => 'No'])->default('Yes');
+        $form->radio('land_ownership', __('Do you own the Farm land?'))->options(['Yes' => 'Yes', 'No' => 'No'])
+              ->when('No', function (Form $form) {
+                $form->radio('no_land_ownership_reason', __('Type of land ownership'))->options(['Lease' => 'Lease', 'Rent' => 'Rent', 'Other' => 'Other'])->rules('required');
+              })->rules('required');
         $form->textarea('general_remarks', __('General remarks'));
         $form->hidden('owner_id');
 

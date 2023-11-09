@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('farms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('location')->nullable();
+            $table->string('coordinates')->nullable();
+            $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
             $table->string('livestock_type')->nullable();
             $table->string('production_type')->nullable()->comment('Milk, eggs, meat, etc');
-            $table->date('date_of_establishment')->nullable();
+            $table->string('date_of_establishment')->nullable();
             $table->string('size')->nullable();
             $table->string('profile_picture')->nullable();
             $table->integer('number_of_livestock')->nullable();
             $table->integer('number_of_workers')->nullable();
             $table->string('land_ownership')->nullable();
+            $table->string('no_land_ownership_reason')->nullable();
             $table->text('general_remarks')->nullable();
             $table->unsignedInteger('owner_id')->nullable();
             $table->foreign('owner_id')->references('id')->on('admin_users');
@@ -35,6 +37,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('farms');
+        Schema::enableForeignKeyConstraints();
     }
 };

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('given_name');
             $table->date('date_of_birth')->nullable();
             $table->string('nin')->nullable();
-            $table->string('physical_address')->nullable();
+            $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
             $table->string('gender')->nullable();
             $table->string('marital_status')->nullable();
             $table->integer('number_of_dependants')->nullable()->comment('Number of dependants / other farmers');
@@ -26,9 +26,11 @@ return new class extends Migration
             $table->string('primary_phone_number')->nullable();
             $table->string('secondary_phone_number')->nullable();
             $table->boolean('is_land_owner')->default(false);
+            $table->string('land_ownership')->nullable();
             $table->string('production_scale')->nullable();
             $table->boolean('access_to_credit')->default(false);
-            $table->date('date_started_farming')->nullable();
+            $table->string('credit_institution')->nullable();
+            $table->string('date_started_farming')->nullable();
             $table->string('highest_level_of_education')->nullable();
             $table->unsignedInteger('applicatant_id')->nullable();
             $table->foreign('applicatant_id')->references('id')->on('admin_users');
@@ -50,7 +52,6 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('farmers');
-
         Schema::enableForeignKeyConstraints();
     }
 };

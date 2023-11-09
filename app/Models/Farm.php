@@ -9,6 +9,8 @@ class Farm extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function animals()
     {
         return $this->hasMany(Animal::class);
@@ -17,6 +19,12 @@ class Farm extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
+    }
+
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
     }
 
     public function breeds()
