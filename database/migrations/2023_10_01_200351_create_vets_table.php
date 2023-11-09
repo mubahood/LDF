@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('surname');
             $table->string('given_name');
             $table->string('nin')->nullable();
-            $table->string('physical_address')->nullable();
+            $table->string('coordinates')->nullable();
+            $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
             $table->string('group_or_practice')->nullable();
             $table->string('license_number')->nullable();
             $table->string('license_expiry_date')->nullable();
@@ -28,7 +29,7 @@ return new class extends Migration
             $table->string('secondary_phone_number')->nullable();
             $table->string('email')->nullable();
             $table->string('postal_address')->nullable();
-            $table->json('services_offered')->nullable();
+            $table->text('services_offered')->nullable();
             $table->string('ares_of_operation')->nullable();
             $table->string('certificate_of_registration')->nullable();
             $table->string('license')->nullable();

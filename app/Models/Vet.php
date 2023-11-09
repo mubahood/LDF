@@ -18,4 +18,9 @@ class Vet extends Model
     {
         return $this->morphOne(Status::class, 'statusable')->latestOfMany();
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id');
+    }
 }

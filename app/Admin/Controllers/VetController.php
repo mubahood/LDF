@@ -27,14 +27,20 @@ class VetController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Vet());
-
-        $grid->column('id', __('Id'));
+        $grid->column('created_at', __('Registered On'))->display(function ($x) {
+            $c = Carbon::parse($x);
+        if ($x == null) {
+            return $x;
+        }
+        return $c->format('d M, Y');
+        });
+        // $grid->column('id', __('Id'));
         $grid->column('profile_picture', __('Profile picture'))->image();
         $grid->column('title', __('Title'));
         $grid->column('surname', __('Surname'));
         $grid->column('given_name', __('Given name'));
         $grid->column('nin', __('Nin'));
-        $grid->column('physical_address', __('Physical address'));
+        $grid->location()->name('Physical Address');
         $grid->column('group_or_practice', __('Group or practice'));
         $grid->column('license_number', __('License number'));
         $grid->column('license_expiry_date', __('License expiry date'));
@@ -45,21 +51,15 @@ class VetController extends AdminController
         $grid->column('email', __('Email'));
         $grid->column('postal_address', __('Postal address'));
         $grid->column('services_offered', __('Services offered'));
-        $grid->column('ares_of_operation', __('Ares of operation'));
-        $grid->column('created_at', __('Created at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
-        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
+        $grid->column('ares_of_operation', __('Areas of operation'));
+
+        // $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+        //     $c = Carbon::parse($x);
+        // if ($x == null) {
+        //     return $x;
+        // }
+        // return $c->format('d M, Y');
+        // });
 
         return $grid;
     }
@@ -91,7 +91,7 @@ class VetController extends AdminController
         $show->field('email', __('Email'));
         $show->field('postal_address', __('Postal address'));
         $show->field('services_offered', __('Services offered'));
-        $show->field('ares_of_operation', __('Ares of operation'));
+        $show->field('ares_of_operation', __('Areas of operation'));
         $show->field('certificate_of_registration', __('Certificate of registration'));
         $show->field('license', __('License'));
         $show->field('other_documents', __('Other documents'));
@@ -115,7 +115,8 @@ class VetController extends AdminController
         $form->text('surname', __('Surname'))->rules('required');
         $form->text('given_name', __('Given name'))->rules('required');
         $form->text('nin', __('Nin'))->rules('required');
-        $form->text('physical_address', __('Physical address'))->rules('required');
+        $form->text('coordinates', __('Coordinates'))->placeholder('lat, lng')->help('e.g. 0.000000, 0.000000');
+        $form->select('location_id', __('Physical Address'))->options(\App\Models\Location::pluck('name', 'id'))->rules('required');
         $form->text('group_or_practice', __('Group or practice'))->rules('required');
         $form->text('license_number', __('License number'))->rules('required');
         $form->date('license_expiry_date', __('License expiry date'))->rules('required');
@@ -126,7 +127,7 @@ class VetController extends AdminController
         $form->email('email', __('Email'))->rules('required');
         $form->text('postal_address', __('Postal address'));
         $form->textarea('services_offered', __('Services offered'))->rules('required');
-        $form->text('ares_of_operation', __('Ares of operation'))->rules('required');
+        $form->text('ares_of_operation', __('Areas of operation'))->rules('required');
         $form->file('certificate_of_registration', __('Certificate of registration'))->rules('required');
         $form->file('license', __('License'))->rules('required');
         $form->multipleFile('other_documents', __('Other documents'));
