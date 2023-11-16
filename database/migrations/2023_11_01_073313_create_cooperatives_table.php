@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cooperations', function (Blueprint $table) {
+        Schema::create('cooperatives', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cooperations');
+        Schema::dropIfExists('cooperatives');
     }
 };

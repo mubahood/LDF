@@ -2,20 +2,20 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Cooperation;
+use App\Models\Cooperative;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class CooperationController extends AdminController
+class CooperativeController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'Cooperation';
+    protected $title = 'Cooperative';
 
     /**
      * Make a grid builder.
@@ -24,7 +24,7 @@ class CooperationController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new Cooperation());
+        $grid = new Grid(new Cooperative());
         
         $grid->filter(function ($f) {
             $f->disableIdFilter();
@@ -52,7 +52,7 @@ class CooperationController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(Cooperation::findOrFail($id));
+        $show = new Show(Cooperative::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
@@ -74,7 +74,7 @@ class CooperationController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new Cooperation());
+        $form = new Form(new Cooperative());
 
         $form->text('name', __('Name'));
         $form->select('location_id', __('Location'))->options(\App\Models\Location::pluck('name', 'id'));

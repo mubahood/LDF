@@ -21,14 +21,14 @@
                 <!-- small box -->
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>{{ $cooperations}}</h3>
+                        <h3>{{ $cooperatives}}</h3>
 
-                        <p>Cooperations</p>
+                        <p>Cooperatives</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-briefcase"></i>
                     </div>
-                    <a href="{{Admin_url('cooperations')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="{{Admin_url('cooperatives')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->

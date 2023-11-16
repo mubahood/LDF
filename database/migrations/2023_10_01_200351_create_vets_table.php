@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('profile_picture')->nullable();
             $table->string('title');
+            $table->string('category')->nullable()->comment('Paravet or Vet');
             $table->string('surname');
             $table->string('given_name');
             $table->string('nin')->nullable();
             $table->string('coordinates')->nullable();
             $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
+            $table->string('village')->nullable();
+            $table->string('zone')->nullable();
             $table->string('group_or_practice')->nullable();
             $table->string('license_number')->nullable();
             $table->string('license_expiry_date')->nullable();

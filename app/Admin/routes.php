@@ -25,5 +25,5 @@ Route::group([
     $router->resource('financial-records', FinancialRecordController::class);
     $router->resource('farm-activities', FarmActivityController::class);
     $router->resource('livestock-types', LivestockTypeController::class);
-    $router->resource('cooperations', CooperationController::class);
+    $router->resource('cooperatives', CooperativeController::class);
 });

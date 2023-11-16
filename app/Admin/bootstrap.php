@@ -24,8 +24,6 @@ Encore\Admin\Form::forget(['map', 'editor','quill']);
 // jQuery UI 1.11.4 -->
 Admin::js('https://code.jquery.com/ui/1.11.4/jquery-ui.min.js');
 
-// Bootstrap 3.3.5 -->
-Admin::js('/adminlte/bootstrap/js/bootstrap.min.js');
 // Morris.js charts -->
 Admin::js('https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');
 Admin::js('/adminlte/plugins/morris/morris.min.js');

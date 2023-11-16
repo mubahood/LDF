@@ -17,7 +17,7 @@ class VetController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Vet';
+    protected $title = 'Vet & Paravet Registration';
 
     /**
      * Make a grid builder.
@@ -37,10 +37,13 @@ class VetController extends AdminController
         // $grid->column('id', __('Id'));
         $grid->column('profile_picture', __('Profile picture'))->image();
         $grid->column('title', __('Title'));
+        $grid->column('category', __('Category'));
         $grid->column('surname', __('Surname'));
         $grid->column('given_name', __('Given name'));
         $grid->column('nin', __('Nin'));
-        $grid->location()->name('Physical Address');
+        $grid->location()->name('SubCounty');
+        $grid->column('village', __('Village'));
+        $grid->column('zone', __('Zone'));
         $grid->column('group_or_practice', __('Group or practice'));
         $grid->column('license_number', __('License number'));
         $grid->column('license_expiry_date', __('License expiry date'));
@@ -77,10 +80,13 @@ class VetController extends AdminController
         $show->field('id', __('Id'));
         $show->field('profile_picture', __('Profile picture'));
         $show->field('title', __('Title'));
+        $show->field('category', __('Category'));
         $show->field('surname', __('Surname'));
         $show->field('given_name', __('Given name'));
         $show->field('nin', __('Nin'));
-        $show->field('physical_address', __('Physical address'));
+        $show->field('physical_address', __('SubCounty'));
+        $show->field('village', __('Village'));
+        $show->field('zone', __('Zone'));
         $show->field('group_or_practice', __('Group or practice'));
         $show->field('license_number', __('License number'));
         $show->field('license_expiry_date', __('License expiry date'));
@@ -112,11 +118,14 @@ class VetController extends AdminController
 
         $form->image('profile_picture', __('Profile picture'));
         $form->text('title', __('Title'))->rules('required');
+        $form->radio('category', __('Category'))->options(['Vet' => 'Vet', 'Paravet' => 'Paravet'])->rules('required')->default('Vet');
         $form->text('surname', __('Surname'))->rules('required');
         $form->text('given_name', __('Given name'))->rules('required');
         $form->text('nin', __('Nin'))->rules('required');
         $form->text('coordinates', __('Coordinates'))->placeholder('lat, lng')->help('e.g. 0.000000, 0.000000');
-        $form->select('location_id', __('Physical Address'))->options(\App\Models\Location::pluck('name', 'id'))->rules('required');
+        $form->select('location_id', __('SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
+        $form->text('village', __('Village'));
+        $form->text('zone', __('Zone'));
         $form->text('group_or_practice', __('Group or practice'))->rules('required');
         $form->text('license_number', __('License number'))->rules('required');
         $form->date('license_expiry_date', __('License expiry date'))->rules('required');
