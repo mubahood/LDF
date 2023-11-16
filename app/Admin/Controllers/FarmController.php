@@ -30,7 +30,7 @@ class FarmController extends AdminController
 
         $grid->filter(function ($f) {
             $f->like('name', 'Name');
-            $f->like('location_id', 'Physical Address');
+            $f->like('location_id', 'SubCounty');
             $f->like('production_type', 'Production type');
             $f->between('created_at', 'Filter by date')->date();
         });
@@ -51,7 +51,9 @@ class FarmController extends AdminController
 
         // $grid->column('profile_picture', __('Profile picture'))->image();
         $grid->column('name', __('Name'));
-        $grid->location()->name('Physical Address');
+        $grid->location()->name('SubCounty');
+        $grid->column('village', __('Village'));
+        $grid->column('zone', __('Zone'));
         $grid->column('production_type', __('Production type'));
         $grid->column('date_of_establishment', __('Date of establishment'));
         $grid->column('breeds', __('Breeds'))
@@ -95,7 +97,9 @@ class FarmController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
-        $show->field('location_id', __('Physical Address'));
+        $show->field('location_id', __('SubCounty'));
+        $show->field('village', __('Village'));
+        $show->field('zone', __('Zone'));
         $show->field('livestock_type', __('Livestock type'));
         $show->field('production_type', __('Production type'));
         $show->field('date_of_establishment', __('Date of establishment'));
@@ -123,7 +127,9 @@ class FarmController extends AdminController
         $form->image('profile_picture', __('Profile picture'));
         $form->text('name', __('Name'))->rules('required');
         $form->text('coordinates', __('Coordinates'))->placeholder('lat, lng')->help('e.g. 0.000000, 0.000000');
-        $form->select('location_id', __('Physical Address'))->options(\App\Models\Location::pluck('name', 'id'))->rules('required');
+        $form->select('location_id', __('SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
+        $form->text('village', __('Village'));
+        $form->text('zone', __('Zone'));
         $form->multipleSelect('breeds', __('Select Breeds'))->options(\App\Models\Breed::pluck('name', 'id'));
         $form->text('production_type', __('Farm Type'))->rules('required')->help('e.g. Dairy, Beef, Eggs, etc.');
         $form->date('date_of_establishment', __('Date of establishment'))->default(date('Y-m-d'))->format('YYYY')->rules('required');

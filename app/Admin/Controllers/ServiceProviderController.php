@@ -37,7 +37,7 @@ class ServiceProviderController extends AdminController
         $grid->column('date_of_registration', __('Date of registration'));
         $grid->column('physical_address', __('Physical address'));
         $grid->column('primary_phone_number', __('Primary phone number'));
-        $grid->column('secondary_phone_number', __('Secondary phone number'));
+        $grid->column('secondary_phone_number', __('Alternative phone number'));
         $grid->column('email', __('Email'));
         $grid->column('postal_address', __('Postal address'));
         $grid->column('other_services', __('Other services'));
@@ -81,7 +81,7 @@ class ServiceProviderController extends AdminController
         $show->field('date_of_registration', __('Date of registration'));
         $show->field('physical_address', __('Physical address'));
         $show->field('primary_phone_number', __('Primary phone number'));
-        $show->field('secondary_phone_number', __('Secondary phone number'));
+        $show->field('secondary_phone_number', __('Alternative phone number'));
         $show->field('email', __('Email'));
         $show->field('postal_address', __('Postal address'));
         $show->field('other_services', __('Other services'));
@@ -114,7 +114,7 @@ class ServiceProviderController extends AdminController
         $form->date('date_of_registration', __('Date of registration'))->rules('required|before_or_equal:today');
         $form->text('physical_address', __('Physical address'))->rules('required');
         $form->text('primary_phone_number', __('Primary phone number'))->rules('required');
-        $form->text('secondary_phone_number', __('Secondary phone number'));
+        $form->text('secondary_phone_number', __('Alternative phone number'));
         $form->email('email', __('Email'));
         $form->text('postal_address', __('Postal address'));
         $form->text('other_services', __('Other services'));

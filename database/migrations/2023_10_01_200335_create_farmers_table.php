@@ -19,6 +19,8 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('nin')->nullable();
             $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
+            $table->string('village')->nullable();
+            $table->string('zone')->nullable();
             $table->string('gender')->nullable();
             $table->string('marital_status')->nullable();
             $table->integer('number_of_dependants')->nullable()->comment('Number of dependants / other farmers');

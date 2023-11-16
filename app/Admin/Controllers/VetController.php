@@ -50,7 +50,7 @@ class VetController extends AdminController
         $grid->column('date_of_registration', __('Date of registration'));
         $grid->column('brief_profile', __('Brief profile'));
         $grid->column('primary_phone_number', __('Primary phone number'));
-        $grid->column('secondary_phone_number', __('Secondary phone number'));
+        $grid->column('secondary_phone_number', __('Alternative phone number'));
         $grid->column('email', __('Email'));
         $grid->column('postal_address', __('Postal address'));
         $grid->column('services_offered', __('Services offered'));
@@ -93,7 +93,7 @@ class VetController extends AdminController
         $show->field('date_of_registration', __('Date of registration'));
         $show->field('brief_profile', __('Brief profile'));
         $show->field('primary_phone_number', __('Primary phone number'));
-        $show->field('secondary_phone_number', __('Secondary phone number'));
+        $show->field('secondary_phone_number', __('Alternative phone number'));
         $show->field('email', __('Email'));
         $show->field('postal_address', __('Postal address'));
         $show->field('services_offered', __('Services offered'));
@@ -132,7 +132,7 @@ class VetController extends AdminController
         $form->date('date_of_registration', __('Date of registration'))->rules('required');
         $form->textarea('brief_profile', __('Brief profile'));
         $form->text('primary_phone_number', __('Primary phone number'))->rules('required');
-        $form->text('secondary_phone_number', __('Secondary phone number'));
+        $form->text('secondary_phone_number', __('Alternative phone number'));
         $form->email('email', __('Email'))->rules('required');
         $form->text('postal_address', __('Postal address'));
         $form->textarea('services_offered', __('Services offered'))->rules('required');

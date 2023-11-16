@@ -84,7 +84,9 @@ class FarmerController extends AdminController
         $grid->column('given_name', __('Given name'));
         $grid->column('date_of_birth', __('Date of birth'));
         $grid->column('nin', __('Nin'));
-        $grid->location()->name('Physical Address');
+        $grid->location()->name('SubCounty');
+        $grid->column('village', __('Village'));
+        $grid->column('zone', __('Zone'));
         $grid->column('gender', __('Gender'));
         $grid->column('marital_status', __('Marital status'))->display(function ($marital_status) {
             switch ($marital_status) {
@@ -108,7 +110,7 @@ class FarmerController extends AdminController
         $grid->column('number_of_dependants', __('Number of dependants'));
         $grid->column('farmer_group', __('Farmer group'));
         $grid->column('primary_phone_number', __('Primary phone number'));
-        $grid->column('secondary_phone_number', __('Secondary phone number'));
+        $grid->column('secondary_phone_number', __('Alternative phone number'));
         $grid->column('is_land_owner', __('Is land owner'))->display(function ($is_land_owner) {
             return $is_land_owner == 1 ? 'Yes' : 'No';
         });
@@ -152,13 +154,15 @@ class FarmerController extends AdminController
         $show->field('given_name', __('Given name'));
         $show->field('date_of_birth', __('Date of birth'));
         $show->field('nin', __('Nin'));
-        $show->field('location_id', __('Physical address'));
+        $show->field('location_id', __('SubCounty'));
+        $show->field('village', __('Village'));
+        $show->field('zone', __('Zone'));
         $show->field('gender', __('Gender'));
         $show->field('marital_status', __('Marital status'));
         $show->field('number_of_dependants', __('Number of dependants'));
         $show->field('farmer_group', __('Farmer group'));
         $show->field('primary_phone_number', __('Primary phone number'));
-        $show->field('secondary_phone_number', __('Secondary phone number'));
+        $show->field('secondary_phone_number', __('Alternative phone number'));
         $show->field('is_land_owner', __('Is land owner'));
         $show->field('production_scale', __('Production scale'));
         $show->field('access_to_credit', __('Access to credit'));
@@ -184,7 +188,9 @@ class FarmerController extends AdminController
         $form->text('given_name', __('Given name'))->rules('required');
         $form->date('date_of_birth', __('Date of birth'))->rules('required|before:today');
         $form->text('nin', __('Nin'))->rules('required');
-        $form->select('location_id', __('Physical Address'))->options(\App\Models\Location::pluck('name', 'id'))->rules('required');
+        $form->select('location_id', __('SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
+        $form->text('village', __('Village'))->rules('required');
+        $form->text('zone', __('Zone'))->rules('required');
         $form->radio('gender', __('Gender'))->options(['M'=> 'Male', 'F' => 'Female'])->rules('required');
         $form->radio('marital_status', __('Marital status'))->options(['S'=> 'Single', 'M' => 'Married', 'D' => 'Divorced', 'W' => 'Widowed'])->rules('required');
         $form->text('number_of_dependants', __('Number of dependants'))->rules('required|numeric');
