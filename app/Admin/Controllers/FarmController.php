@@ -31,7 +31,7 @@ class FarmController extends AdminController
         $grid->filter(function ($f) {
             $f->like('name', 'Name');
             $f->like('location_id', 'SubCounty');
-            $f->like('production_type', 'Production type');
+            $f->like('production_type', 'Farm type');
             $f->between('created_at', 'Filter by date')->date();
         });
 
@@ -54,7 +54,7 @@ class FarmController extends AdminController
         $grid->location()->name('SubCounty');
         $grid->column('village', __('Village'));
         $grid->column('zone', __('Zone'));
-        $grid->column('production_type', __('Production type'));
+        $grid->column('production_type', __('Farm type'));
         $grid->column('date_of_establishment', __('Date of establishment'));
         $grid->column('breeds', __('Breeds'))
         ->display(
@@ -70,7 +70,7 @@ class FarmController extends AdminController
                 }
             }
         );
-        $grid->column('size', __('Size (acres)'));
+        $grid->column('size', __('Land size (acres)'));
         $grid->column('number_of_workers', __('Number of workers'));
         $grid->column('land_ownership', __('Land ownership'));
         $grid->column('no_land_ownership_reason', __('Type of land ownership'));
@@ -101,9 +101,9 @@ class FarmController extends AdminController
         $show->field('village', __('Village'));
         $show->field('zone', __('Zone'));
         $show->field('livestock_type', __('Livestock type'));
-        $show->field('production_type', __('Production type'));
+        $show->field('production_type', __('Farm type'));
         $show->field('date_of_establishment', __('Date of establishment'));
-        $show->field('size', __('Size'));
+        $show->field('size', __('Land size'));
         $show->field('profile_picture', __('Profile picture'));
         $show->field('number_of_livestock', __('Number of livestock'));
         $show->field('number_of_workers', __('Number of workers'));
@@ -133,7 +133,7 @@ class FarmController extends AdminController
         $form->multipleSelect('breeds', __('Select Breeds'))->options(\App\Models\Breed::pluck('name', 'id'));
         $form->text('production_type', __('Farm Type'))->rules('required')->help('e.g. Dairy, Beef, Eggs, etc.');
         $form->date('date_of_establishment', __('Date of establishment'))->default(date('Y-m-d'))->format('YYYY')->rules('required');
-        $form->text('size', __('Farm Size in acre'))->rules('required')->help('e.g. 10 acres, 20 acres, etc.');
+        $form->text('size', __('Land Size in acre'))->rules('required')->help('e.g. 10 acres, 20 acres, etc.');
         // $form->number('number_of_livestock', __('Number of livestock'));
         $form->number('number_of_workers', __('Number of workers'));
         $form->radio('land_ownership', __('Do you own the Farm land?'))->options(['Yes' => 'Yes', 'No' => 'No'])
