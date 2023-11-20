@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('coordinates')->nullable();
             $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
             $table->string('village')->nullable();
+            $table->string('parish')->nullable();
             $table->string('zone')->nullable();
             $table->string('group_or_practice')->nullable();
             $table->string('license_number')->nullable();

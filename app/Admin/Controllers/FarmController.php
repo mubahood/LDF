@@ -53,6 +53,7 @@ class FarmController extends AdminController
         $grid->column('name', __('Name'));
         $grid->location()->name('SubCounty');
         $grid->column('village', __('Village'));
+        $grid->column('parish', __('Parish'));
         $grid->column('zone', __('Zone'));
         $grid->column('production_type', __('Farm type'));
         $grid->column('date_of_establishment', __('Date of establishment'));
@@ -99,6 +100,7 @@ class FarmController extends AdminController
         $show->field('name', __('Name'));
         $show->field('location_id', __('SubCounty'));
         $show->field('village', __('Village'));
+        $show->field('parish', __('Parish'));
         $show->field('zone', __('Zone'));
         $show->field('livestock_type', __('Livestock type'));
         $show->field('production_type', __('Farm type'));
@@ -129,6 +131,7 @@ class FarmController extends AdminController
         $form->text('coordinates', __('Coordinates'))->placeholder('lat, lng')->help('e.g. 0.000000, 0.000000');
         $form->select('location_id', __('SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
         $form->text('village', __('Village'));
+        $form->text('parish', __('Parish'));
         $form->text('zone', __('Zone'));
         $form->multipleSelect('breeds', __('Select Breeds'))->options(\App\Models\Breed::pluck('name', 'id'));
         $form->text('production_type', __('Farm Type'))->rules('required')->help('e.g. Dairy, Beef, Eggs, etc.');

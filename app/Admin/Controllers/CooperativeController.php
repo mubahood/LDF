@@ -35,8 +35,10 @@ class CooperativeController extends AdminController
 
         // $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
-        $grid->location()->name('Location');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-        $grid->column('production_type', __('Production type'));
+        $grid->location()->name('SubCounty');
+        $grid->column('village', __('Village'));
+        $grid->column('parish', __('Parish'));
+        $grid->column('zone', __('Zone'));        $grid->column('production_type', __('Production type'));
         $grid->column('date_of_establishment', __('Date of establishment'));
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));                                                                                                                                      
@@ -56,8 +58,9 @@ class CooperativeController extends AdminController
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
-        $show->field('location_id', __('Location id'));
-        $show->field('production_type', __('Production type'));
+        $show->field('location_id', __('SubCounty'));
+        $show->field('village', __('Village'));
+        $show->field('parish', __('Parish'));        $show->field('production_type', __('Production type'));
         $show->field('date_of_establishment', __('Date of establishment'));
         $show->field('certification', __('Certification'));
         $show->field('description', __('Description'));
@@ -77,8 +80,10 @@ class CooperativeController extends AdminController
         $form = new Form(new Cooperative());
 
         $form->text('name', __('Name'));
-        $form->select('location_id', __('Location'))->options(\App\Models\Location::pluck('name', 'id'));
-        $form->text('production_type', __('Production type'));
+        $form->select('location_id', __('SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
+        $form->text('village', __('Village'))->rules('required');
+        $form->text('parish', __('Parish'))->rules('required');
+        $form->text('zone', __('Zone'))->rules('required');        $form->text('production_type', __('Production type'));
         $form->date('date_of_establishment', __('Date of establishment'));
         $form->file('certification', __('Certification'));
         $form->hidden('applicant_id');

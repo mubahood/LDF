@@ -43,6 +43,7 @@ class VetController extends AdminController
         $grid->column('nin', __('Nin'));
         $grid->location()->name('SubCounty');
         $grid->column('village', __('Village'));
+        $grid->column('parish', __('Parish'));
         $grid->column('zone', __('Zone'));
         $grid->column('group_or_practice', __('Group or practice'));
         $grid->column('license_number', __('License number'));
@@ -86,6 +87,7 @@ class VetController extends AdminController
         $show->field('nin', __('Nin'));
         $show->field('physical_address', __('SubCounty'));
         $show->field('village', __('Village'));
+        $show->field('parish', __('Parish'));
         $show->field('zone', __('Zone'));
         $show->field('group_or_practice', __('Group or practice'));
         $show->field('license_number', __('License number'));
@@ -125,6 +127,7 @@ class VetController extends AdminController
         $form->text('coordinates', __('Coordinates'))->placeholder('lat, lng')->help('e.g. 0.000000, 0.000000');
         $form->select('location_id', __('SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
         $form->text('village', __('Village'));
+        $form->text('parish', __('Parish'));
         $form->text('zone', __('Zone'));
         $form->text('group_or_practice', __('Group or practice'))->rules('required');
         $form->text('license_number', __('License number'))->rules('required');

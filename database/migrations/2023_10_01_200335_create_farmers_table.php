@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nin')->nullable();
             $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
             $table->string('village')->nullable();
+            $table->string('parish')->nullable();
             $table->string('zone')->nullable();
             $table->string('gender')->nullable();
             $table->string('marital_status')->nullable();

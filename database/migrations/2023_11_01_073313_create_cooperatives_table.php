@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('location_id')->nullable()->constrained('locations')->onDelete('set null');
+            $table->string('village')->nullable();
+            $table->string('parish')->nullable();
+            $table->string('zone')->nullable();
             $table->string('production_type')->nullable();
             $table->string('date_of_establishment')->nullable();
             $table->string('certification')->nullable();

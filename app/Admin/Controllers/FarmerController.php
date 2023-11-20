@@ -86,6 +86,7 @@ class FarmerController extends AdminController
         $grid->column('nin', __('Nin'));
         $grid->location()->name('SubCounty');
         $grid->column('village', __('Village'));
+        $grid->column('parish', __('Parish'));
         $grid->column('zone', __('Zone'));
         $grid->column('gender', __('Gender'));
         $grid->column('marital_status', __('Marital status'))->display(function ($marital_status) {
@@ -156,6 +157,7 @@ class FarmerController extends AdminController
         $show->field('nin', __('Nin'));
         $show->field('location_id', __('SubCounty'));
         $show->field('village', __('Village'));
+        $show->field('parish', __('Parish'));
         $show->field('zone', __('Zone'));
         $show->field('gender', __('Gender'));
         $show->field('marital_status', __('Marital status'));
@@ -190,6 +192,7 @@ class FarmerController extends AdminController
         $form->text('nin', __('Nin'))->rules('required');
         $form->select('location_id', __('SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
         $form->text('village', __('Village'))->rules('required');
+        $form->text('parish', __('Parish'))->rules('required');
         $form->text('zone', __('Zone'))->rules('required');
         $form->radio('gender', __('Gender'))->options(['M'=> 'Male', 'F' => 'Female'])->rules('required');
         $form->radio('marital_status', __('Marital status'))->options(['S'=> 'Single', 'M' => 'Married', 'D' => 'Divorced', 'W' => 'Widowed'])->rules('required');

@@ -17,7 +17,7 @@ class ServiceProviderController extends AdminController
      *
      * @var string
      */
-    protected $title = 'ServiceProvider';
+    protected $title = 'Input Providers';
 
     /**
      * Make a grid builder.
