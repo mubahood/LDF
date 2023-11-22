@@ -38,7 +38,8 @@ class CooperativeController extends AdminController
         $grid->location()->name('SubCounty');
         $grid->column('village', __('Village'));
         $grid->column('parish', __('Parish'));
-        $grid->column('zone', __('Zone'));        $grid->column('production_type', __('Production type'));
+        $grid->column('zone', __('Zone'));
+        $grid->column('production_type', __('Production type'));
         $grid->column('date_of_establishment', __('Date of establishment'));
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));                                                                                                                                      

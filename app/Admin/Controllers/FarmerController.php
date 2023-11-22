@@ -115,7 +115,7 @@ class FarmerController extends AdminController
         $grid->column('is_land_owner', __('Is land owner'))->display(function ($is_land_owner) {
             return $is_land_owner == 1 ? 'Yes' : 'No';
         });
-        $grid->column('production_scale', __('Production scale'));
+        $grid->column('production_scale', __('Production type'));
         $grid->column('access_to_credit', __('Access to credit'))->display(function ($access_to_credit) {
             return $access_to_credit == 1 ? 'Yes' : 'No';
         });
@@ -166,7 +166,7 @@ class FarmerController extends AdminController
         $show->field('primary_phone_number', __('Primary phone number'));
         $show->field('secondary_phone_number', __('Alternative phone number'));
         $show->field('is_land_owner', __('Is land owner'));
-        $show->field('production_scale', __('Production scale'));
+        $show->field('production_scale', __('Production type'));
         $show->field('access_to_credit', __('Access to credit'));
         $show->field('date_started_farming', __('Date started farming'));
         $show->field('highest_level_of_education', __('Highest level of education'));
