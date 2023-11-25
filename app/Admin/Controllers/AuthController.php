@@ -39,10 +39,10 @@ class AuthController extends BaseAuthController
             }
 
             if (Validator::make($_POST, [
-                'email' => 'required|email',
+                'email' => 'required|email|unique:admin_users',
             ])->fails()) {
                 return back()
-                    ->withErrors(['email' => 'Enter a valid email address.'])
+                    ->withErrors(['email' => 'Enter a valid email address or Email already exists.'])
                     ->withInput();
             }
 
