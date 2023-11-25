@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('animals', function (Blueprint $table) {
             $table->id();
+            $table->string('tag_number')->nullable();
             $table->foreignId('farm_id')->constrained();
             $table->foreignId('breed_id')->constrained();
             $table->json('parents')->nullable();
@@ -27,6 +28,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('animals');
+        Schema::enableForeignKeyConstraints();
     }
 };

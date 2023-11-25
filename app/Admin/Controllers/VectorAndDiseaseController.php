@@ -17,7 +17,7 @@ class VectorAndDiseaseController extends AdminController
      *
      * @var string
      */
-    protected $title = 'VectorAndDisease';
+    protected $title = 'Pests And Disease';
 
     /**
      * Make a grid builder.
@@ -28,7 +28,9 @@ class VectorAndDiseaseController extends AdminController
     {
         $grid = new Grid(new VectorAndDisease());
 
-        $grid->column('id', __('Id'));
+
+
+        // $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
         $grid->column('image', __('Image'));
         $grid->column('description', __('Description'));
@@ -60,7 +62,7 @@ class VectorAndDiseaseController extends AdminController
     {
         $show = new Show(VectorAndDisease::findOrFail($id));
 
-        $show->field('id', __('Id'));
+        // $show->field('id', __('Id'));
         $show->field('name', __('Name'));
         $show->field('image', __('Image'));
         $show->field('description', __('Description'));

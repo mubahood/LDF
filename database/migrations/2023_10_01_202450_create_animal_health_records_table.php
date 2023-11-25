@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('animal_health_records', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->string('record_type');
             $table->foreignId('animal_id')->constrained();
             $table->text('diagnosis')->nullable();
             $table->text('treatment')->nullable();
-            $table->foreignId('user_id')->constrained()->nullable();
-            $table->timestamps();
+            $table->unsignedInteger('recorded_by')->nullable();
+            $table->foreign('recorded_by')->references('id')->on('admin_users');            $table->timestamps();
         });
     }
 
@@ -27,6 +28,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('animal_health_records');
+        Schema::enableForeignKeyConstraints();
     }
 };

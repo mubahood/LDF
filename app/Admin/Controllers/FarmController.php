@@ -29,10 +29,11 @@ class FarmController extends AdminController
         $grid = new Grid(new Farm());
 
         $grid->filter(function ($f) {
+            $f->disableIdFilter();
             $f->like('name', 'Name');
             $f->like('location_id', 'SubCounty');
             $f->like('production_type', 'Farm type');
-            $f->between('created_at', 'Filter by date')->date();
+            $f->between('created_at', 'Filter by date registered')->date();
         });
 
         if(Admin::user()->isRole('ldf_admin') || Admin::user()->isRole('administrator') || Admin::user()->isRole('agent')) {
