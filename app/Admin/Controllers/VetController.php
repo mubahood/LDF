@@ -27,6 +27,18 @@ class VetController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Vet());
+
+        $grid->filter(function ($f) {
+            $f->disableIdFilter();
+            $f->like('name', 'Name');
+            $f->select('location_id', 'SubCounty')->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'));
+            $f->like('category', 'Category');
+            $f->like('group_or_practice', 'Group or practice');
+            $f->between('created_at', 'Filter by date registered')->date();
+        });
+
+        $grid->model()->latest();
+        
         $grid->column('created_at', __('Registered On'))->display(function ($x) {
             $c = Carbon::parse($x);
         if ($x == null) {

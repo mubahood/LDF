@@ -28,11 +28,28 @@ class ServiceProviderController extends AdminController
     {
         $grid = new Grid(new ServiceProvider());
 
-        $grid->column('id', __('Id'));
+        $grid->filter(function($filter){
+            $filter->disableIdFilter();
+            $filter->like('name', 'Name');
+            $filter->like('owner_name', 'Owner name');
+            $filter->like('class_of_service', 'Class of service');
+            $filter->between('date_of_registration', 'Date of registration')->date();
+            $filter->like('physical_address', 'Physical address');
+            $filter->like('email', 'Email');
+            $filter->like('postal_address', 'Postal address');
+            $filter->like('other_services', 'Other services');
+            $filter->like('distroict_of_operation', 'District of operation');
+            $filter->like('tin_number_business', 'Tin number business');
+            $filter->like('tin_number_owner', 'Tin number owner');
+            $filter->between('created_at', 'Filter by date registered')->date();
+        });
+
+        $grid->model()->latest();
+
+        // $grid->column('id', __('Id'));
         $grid->column('logo', __('Logo'))->image();
         $grid->column('name', __('Name'));
         $grid->column('owner_name', __('Owner name'));
-        $grid->column('owner_profile', __('Owner profile'));
         $grid->column('class_of_service', __('Class of service'));
         $grid->column('date_of_registration', __('Date of registration'));
         $grid->column('physical_address', __('Physical address'));

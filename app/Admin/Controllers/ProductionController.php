@@ -28,9 +28,19 @@ class ProductionController extends AdminController
     {
         $grid = new Grid(new ProductionRecord());
 
-        $grid->column('id', __('Id'));
-        $grid->column('breed_id', __('Breed id'));
-        $grid->column('farm_id', __('Farm id'));
+        $grid->filter(function($filter){
+            $filter->disableIdFilter();
+            $filter->equal('farm_id', 'Farm')->select(\App\Models\Farm::pluck('name','id'));
+            $filter->equal('breed_id', 'Breed')->select(\App\Models\Breed::pluck('name','id'));
+            $filter->equal('production_type', 'Production Type')->select(['Egg' => 'Egg', 'Meat' => 'Meat']);
+            $filter->between('created_at', 'Filter by date registered')->date();
+        });
+
+        $grid->model()->orderBy('updated_at', 'desc');
+
+        // $grid->column('id', __('Id'));
+        $grid->breed()->name('Breed');
+        $grid->farm()->name('Farm');
         $grid->column('production_type', __('Production type'));
         $grid->column('weight', __('Weight'));
         $grid->column('daily_weight_gain', __('Daily weight gain'));
