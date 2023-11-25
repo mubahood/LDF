@@ -30,7 +30,6 @@ class VetController extends AdminController
 
         $grid->filter(function ($f) {
             $f->disableIdFilter();
-            $f->like('name', 'Name');
             $f->select('location_id', 'SubCounty')->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'));
             $f->like('category', 'Category');
             $f->like('group_or_practice', 'Group or practice');
@@ -38,7 +37,7 @@ class VetController extends AdminController
         });
 
         $grid->model()->latest();
-        
+
         $grid->column('created_at', __('Registered On'))->display(function ($x) {
             $c = Carbon::parse($x);
         if ($x == null) {
