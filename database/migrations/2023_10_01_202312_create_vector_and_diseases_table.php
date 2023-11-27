@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('vector_and_diseases', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->foreignId('farm_id')->nullable()->constrained();
+            $table->foreignId('animal_id')->nullable()->constrained();
             $table->string('name');
             $table->string('image')->nullable();
             $table->text('description')->nullable();

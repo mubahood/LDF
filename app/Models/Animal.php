@@ -14,6 +14,11 @@ class Animal extends Model
         return $this->hasMany(AnimalHealthRecord::class);
     }
 
+    public function vectorAndDiseases()
+    {
+        return $this->hasMany(VectorAndDisease::class);
+    }
+
     public function breed()
     {
         return $this->belongsTo(Breed::class);

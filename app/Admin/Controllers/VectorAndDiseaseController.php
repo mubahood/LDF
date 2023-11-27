@@ -28,26 +28,36 @@ class VectorAndDiseaseController extends AdminController
     {
         $grid = new Grid(new VectorAndDisease());
 
+        $grid->filter(function ($filter) {
+            $filter->disableIdFilter();
+            $filter->equal('farm_id', 'Farm')->select(\App\Models\Farm::pluck('name', 'id'));
+            $filter->equal('animal_id', 'Animal')->select(\App\Models\Animal::pluck('tag_number', 'id'));
+            $filter->between('date', 'Reported On')->date();
+        });
 
+        $grid->model()->orderBy('updated_at', 'desc');
 
+        $grid->column('date', __('Reported On'));
+        $grid->farm()->name('Farm');
+        $grid->animal()->tag_number('Animal');
         // $grid->column('id', __('Id'));
         $grid->column('name', __('Name'));
-        $grid->column('image', __('Image'));
-        $grid->column('description', __('Description'));
-        $grid->column('created_at', __('Created at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
-        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
+        // $grid->column('image', __('Image'));
+        // $grid->column('description', __('Description'));
+        // $grid->column('created_at', __('Created at'))->display(function ($x) {
+        //     $c = Carbon::parse($x);
+        // if ($x == null) {
+        //     return $x;
+        // }
+        // return $c->format('d M, Y');
+        // });
+        // $grid->column('updated_at', __('Updated at'))->display(function ($x) {
+        //     $c = Carbon::parse($x);
+        // if ($x == null) {
+        //     return $x;
+        // }
+        // return $c->format('d M, Y');
+        // });
 
         return $grid;
     }
@@ -65,6 +75,7 @@ class VectorAndDiseaseController extends AdminController
         // $show->field('id', __('Id'));
         $show->field('name', __('Name'));
         $show->field('image', __('Image'));
+        
         $show->field('description', __('Description'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
@@ -80,8 +91,10 @@ class VectorAndDiseaseController extends AdminController
     protected function form()
     {
         $form = new Form(new VectorAndDisease());
-
-        $form->text('name', __('Name'));
+        $form->date('date', __('Date'))->default(date('Y-m-d'))->rules('required');
+        $form->select('farm_id', __('Farm'))->options(\App\Models\Farm::pluck('name', 'id'))->rules('required');
+        $form->select('animal_id', __('Animal'))->options(\App\Models\Animal::pluck('tag_number', 'id'));
+        $form->text('name', __('Name'))->rules('required');
         $form->image('image', __('Image'));
         $form->textarea('description', __('Description'));
 

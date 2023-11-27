@@ -41,7 +41,7 @@ class VetController extends AdminController
         $grid->column('created_at', __('Registered On'))->display(function ($x) {
             $c = Carbon::parse($x);
         if ($x == null) {
-            return $x;
+            return $x; 
         }
         return $c->format('d M, Y');
         });

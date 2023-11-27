@@ -47,6 +47,11 @@ class Farm extends Model
         return $this->hasMany(AnimalHealthRecord::class);
     }
 
+    public function vectorAndDiseases()
+    {
+        return $this->hasMany(VectorAndDisease::class);
+    }
+
     public function statuses()
     {
         return $this->morphMany(Status::class, 'statusable');
