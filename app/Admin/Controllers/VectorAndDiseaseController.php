@@ -72,10 +72,16 @@ class VectorAndDiseaseController extends AdminController
     {
         $show = new Show(VectorAndDisease::findOrFail($id));
 
+        $show->field('date');
+        $show->field('farm_id', __('Farm'))->as(function ($farm_id) {
+            return \App\Models\Farm::find($farm_id)?->name;
+        });
+        $show->field('animal_id', __('Animal'))->as(function ($animal_id) {
+            return \App\Models\Animal::find($animal_id)?->tag_number;
+        });
         // $show->field('id', __('Id'));
         $show->field('name', __('Name'));
-        $show->field('image', __('Image'));
-        
+        $show->image()->image();
         $show->field('description', __('Description'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
