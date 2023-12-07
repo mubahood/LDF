@@ -18,4 +18,26 @@ class ServiceProvider extends Model
     {
         return $this->morphOne(Status::class, 'statusable')->latestOfMany();
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+           
+        });
+
+          //call back to send a notification to the user
+          self::created(function ($model) 
+          {
+              Notification::send_notification($model, 'ServiceProvider', request()->segment(count(request()->segments())));
+          });
+
+            //call back to send a notification to the user
+            self::updated(function ($model) 
+            {
+                Notification::update_notification($model, 'ServiceProvider', request()->segment(count(request()->segments())-1));
+            });
+
+    }
 }

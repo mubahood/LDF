@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FarmActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::view('auth/register', 'auth.register');
+// routes/web.php
+
+Route::get('/calendar', [FarmActivityController::class, 'index'])->name('event.index');
+Route::post('/calendar/events', [FarmActivityController::class, 'store'])->name('event.store');
+

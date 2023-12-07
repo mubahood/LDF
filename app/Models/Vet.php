@@ -23,4 +23,26 @@ class Vet extends Model
     {
         return $this->belongsTo(Location::class, 'location_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+           
+        });
+
+          //call back to send a notification to the user
+          self::created(function ($model) 
+          {
+              Notification::send_notification($model, 'Vet', request()->segment(count(request()->segments())));
+          });
+
+            //call back to send a notification to the user
+            self::updated(function ($model) 
+            {
+                Notification::update_notification($model, 'Vet', request()->segment(count(request()->segments())-1));
+            });
+
+    }
 }

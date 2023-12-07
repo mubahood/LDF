@@ -1,6 +1,8 @@
 <?php
 
 use Encore\Admin\Facades\Admin;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Notification;
 /**
  * Laravel-admin - admin builder based on Laravel.
  * @author z-song <https://github.com/z-song>
@@ -63,3 +65,13 @@ Admin::css('/adminlte/plugins/daterangepicker/daterangepicker-bs3.css');
 // bootstrap wysihtml5 - text editor -->
 Admin::css('/adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css');
 
+Admin::navbar(function (\Encore\Admin\Widgets\Navbar $navbar) {
+    $notifications = [];
+    $user =  Auth::user();
+    if ($user != null) {
+        $notifications = Notification::get_notifications($user);
+    }
+
+    $navbar->right(view('notification_bell', ['notifications' => $notifications]));
+    
+});

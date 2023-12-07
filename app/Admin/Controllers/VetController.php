@@ -8,6 +8,8 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Carbon\Carbon;
+use Encore\Admin\Facades\Admin;
+use App\Models\Utils;
 
 
 class VetController extends AdminController
@@ -36,7 +38,18 @@ class VetController extends AdminController
             $f->between('created_at', 'Filter by date registered')->date();
         });
 
-        $grid->model()->latest();
+        //show a user only their records if they are not an admin
+        if (!Admin::user()->inRoles(['administrator','ldf_admin'])) {
+            $grid->model()->where('user_id', Admin::user()->id);
+        }
+        //disable batch actions
+        $grid->disableBatchActions();
+
+         //order of table
+         $grid->model()->orderBy('id', 'desc');
+
+         //disable action buttons appropriately
+         Utils::disable_buttons('Vet', $grid);
 
         $grid->column('created_at', __('Registered On'))->display(function ($x) {
             $c = Carbon::parse($x);
@@ -45,36 +58,26 @@ class VetController extends AdminController
         }
         return $c->format('d M, Y');
         });
-        // $grid->column('id', __('Id'));
+     
         $grid->column('profile_picture', __('Profile picture'))->image();
         $grid->column('title', __('Title'));
         $grid->column('category', __('Category'));
         $grid->column('surname', __('Surname'));
-        $grid->column('given_name', __('Given name'));
-        $grid->column('nin', __('Nin'));
-        $grid->location()->name('SubCounty');
-        $grid->column('village', __('Village'));
-        $grid->column('parish', __('Parish'));
-        $grid->column('zone', __('Zone'));
-        $grid->column('group_or_practice', __('Group or practice'));
-        $grid->column('license_number', __('License number'));
-        $grid->column('license_expiry_date', __('License expiry date'));
-        $grid->column('date_of_registration', __('Date of registration'));
-        $grid->column('brief_profile', __('Brief profile'));
         $grid->column('primary_phone_number', __('Primary phone number'));
-        $grid->column('secondary_phone_number', __('Alternative phone number'));
         $grid->column('email', __('Email'));
-        $grid->column('postal_address', __('Postal address'));
         $grid->column('services_offered', __('Services offered'));
         $grid->column('ares_of_operation', __('Areas of operation'));
-
-        // $grid->column('updated_at', __('Updated at'))->display(function ($x) {
-        //     $c = Carbon::parse($x);
-        // if ($x == null) {
-        //     return $x;
-        // }
-        // return $c->format('d M, Y');
-        // });
+        $grid->column('status', __('Status'))->display(function ($x) {
+            if ($x == 'Approved') {
+                return "<span class='badge badge-success'>$x</span>";
+            } elseif ($x == 'Rejected') {
+                return "<span class='badge badge-danger'>$x</span>";
+            } elseif ($x == 'Halted') {
+                return "<span class='badge badge-warning'>$x</span>";
+            } else {
+                return "<span class='badge badge-info'>$x</span>";
+            }
+        });
 
         return $grid;
     }
@@ -88,9 +91,10 @@ class VetController extends AdminController
     protected function detail($id)
     {
         $show = new Show(Vet::findOrFail($id));
+        //delete notification after viewing the form
+        Utils::delete_notification('Vet', $id);
 
-        $show->field('id', __('Id'));
-        $show->field('profile_picture', __('Profile picture'));
+        $show->file('profile_picture', __('Profile picture'));
         $show->field('title', __('Title'));
         $show->field('category', __('Category'));
         $show->field('surname', __('Surname'));
@@ -111,12 +115,17 @@ class VetController extends AdminController
         $show->field('postal_address', __('Postal address'));
         $show->field('services_offered', __('Services offered'));
         $show->field('ares_of_operation', __('Areas of operation'));
-        $show->field('certificate_of_registration', __('Certificate of registration'));
-        $show->field('license', __('License'));
+        $show->field('certificate_of_registration', __('Certificate of registration'))->file();
+        $show->field('license', __('License'))->file();
         $show->field('other_documents', __('Other documents'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
+        //disable tools
+        $show->panel()->tools(function ($tools) {
+            $tools->disableEdit();
+            $tools->disableDelete();
+        });
         return $show;
     }
 
@@ -129,14 +138,39 @@ class VetController extends AdminController
     {
         $form = new Form(new Vet());
 
-        $form->image('profile_picture', __('Profile picture'));
+        if($form->isCreating()){
+            $form->hidden('status')->default('Pending');
+            $form->hidden('user_id')->default(Admin::user()->id);
+        }
+
+        $form->file('profile_picture', __('Profile picture'));
         $form->text('title', __('Title'))->rules('required');
         $form->radio('category', __('Category'))->options(['Vet' => 'Vet', 'Paravet' => 'Paravet'])->rules('required')->default('Vet');
         $form->text('surname', __('Surname'))->rules('required');
         $form->text('given_name', __('Given name'))->rules('required');
         $form->text('nin', __('Nin'))->rules('required');
-        $form->text('coordinates', __('Coordinates'))->placeholder('lat, lng')->help('e.g. 0.000000, 0.000000');
-        $form->select('location_id', __('SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
+        //  //add a get gps coordinate button
+        //  $form->html('<button type="button" id="getLocationButton">' . __('Get GPS Coordinates') . '</button>');
+
+        //  $form->text('coordinates', __('Location '))->attribute([
+        //      'id' => 'coordinates',   
+        //  ])->required();
+      
+         
+        //  //script to get the gps coordinates
+        //  Admin::script(<<<SCRIPT
+        //      document.getElementById('getLocationButton').addEventListener('click', function() {
+        //          if ("geolocation" in navigator) {
+        //              navigator.geolocation.getCurrentPosition(function(position) {
+        //                  document.getElementById('coordinates').value = position.coords.latitude + ', ' + position.coords.longitude;
+        //              });
+        //          } else {
+        //              alert('Geolocation is not supported by your browser.');
+        //          }
+        //      });
+        //  SCRIPT);
+        $form->text('coordinates', __('Physical Address '))->required();
+        $form->select('location_id', __('District SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
         $form->text('village', __('Village'));
         $form->text('parish', __('Parish'));
         $form->text('zone', __('Zone'));
@@ -154,6 +188,17 @@ class VetController extends AdminController
         $form->file('certificate_of_registration', __('Certificate of registration'))->rules('required');
         $form->file('license', __('License'))->rules('required');
         $form->multipleFile('other_documents', __('Other documents'));
+
+        //check if the user is an admin and show the status field
+        if (Admin::user()->inRoles(['administrator','ldf_admin'])) {
+            $form->radioCard('status', __('Status'))->options(['halted' => 'Halted', 'approved' => 'Approved', 'rejected' => 'Rejected'])->rules('required');
+        }
+
+        $form->tools(function (Form\Tools $tools) {
+            $tools->disableDelete();
+            $tools->disableView();
+           
+        });
 
         return $form;
     }
