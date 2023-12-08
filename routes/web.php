@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\DB;
 Route::view('auth/register', 'auth.register');
 // routes/web.php
 Route::get('/health', function () {
-    $data = DB::table('locations')
-    ->join('farms', 'locations.id', '=', 'farms.location_id')
-    ->join('breed_farm', 'farms.id', '=', 'breed_farm.farm_id')
-    ->join('breeds', 'breed_farm.breed_id', '=', 'breeds.id')
-    ->select('locations.name as location_name', 'breeds.name as breed_name', DB::raw('COUNT(*) as breed_count'))
-    ->groupBy('locations.name', 'breeds.name')
+    $data = DB::table('production_records')
+    ->join('farms', 'production_records.farm_id', '=', 'farms.id')
+    ->join('breeds', 'production_records.breed_id', '=', 'breeds.id')
+    ->select( 'breeds.name as breed_name', 'farms.name as farm_name', 'production_records.created_at as date', 'production_records.daily_weight_gain as weight')
+    ->groupBy( 'breeds.name', 'farms.name', 'production_records.created_at', 'production_records.daily_weight_gain')
     ->get();
+
             dd($data);
 
 });

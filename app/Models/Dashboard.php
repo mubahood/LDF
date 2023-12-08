@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\AnimalHealthRecord;
+use App\Models\ProductionRecord;
 use Illuminate\Support\Facades\DB;
 
 class Dashboard extends Model
 {
     use HasFactory;
 
-   
+   //livestock health chart
     public static function liveStockHealth()
     {
         // Fetch all health records
@@ -71,7 +72,9 @@ class Dashboard extends Model
         ]);
     }
     
-    public static function livestockBreed() {
+    //livestock breed chart
+    public static function livestockBreed() 
+    {
         $data = DB::table('locations')
             ->join('farms', 'locations.id', '=', 'farms.location_id')
             ->join('breed_farm', 'farms.id', '=', 'breed_farm.farm_id')
@@ -82,7 +85,21 @@ class Dashboard extends Model
     
         return view('livestock_breed_chart', compact('data'));
     }
-    
+
+    //production metrics chart
+
+    public static function productionMetrics()
+    {
+        $data = DB::table('production_records')
+        ->join('farms', 'production_records.farm_id', '=', 'farms.id')
+        ->join('breeds', 'production_records.breed_id', '=', 'breeds.id')
+        ->select( 'breeds.name as breed_name', 'farms.name as farm_name', 'production_records.created_at as date', 'production_records.daily_weight_gain as weight')
+        ->groupBy( 'breeds.name', 'farms.name', 'production_records.created_at', 'production_records.daily_weight_gain')
+        ->get();
+        
+        return view('production_metrics_chart', compact('data'));
+    }
+
     
 
     

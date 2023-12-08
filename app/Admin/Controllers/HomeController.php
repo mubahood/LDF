@@ -26,7 +26,13 @@ class HomeController extends Controller
                  $row->column(12, function (Column $column) {
                      $column->append(Dashboard::livestockBreed());
                  });
-             });
+             })
+
+            ->row(function (Row $row) {
+                $row->column(12, function (Column $column) {
+                    $column->append(Dashboard::productionMetrics());
+                });
+            });
      
     
     }
