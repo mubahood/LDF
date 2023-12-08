@@ -5,8 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\AnimalHealthRecord;
-use App\Models\ProductionRecord;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class Dashboard extends Model
 {
@@ -96,8 +96,28 @@ class Dashboard extends Model
         ->select( 'breeds.name as breed_name', 'farms.name as farm_name', 'production_records.created_at as date', 'production_records.daily_weight_gain as weight')
         ->groupBy( 'breeds.name', 'farms.name', 'production_records.created_at', 'production_records.daily_weight_gain')
         ->get();
-        
+
         return view('production_metrics_chart', compact('data'));
+    }
+
+    //user activity chart
+    public static function userMetrics(Request $request)
+    {
+        $filter = $request->input('filter', 'day'); // Default filter is day
+
+        $startDate = now()->sub($filter, 1); // Adjust the start date based on the selected filter
+
+        $userCounts = DB::table('admin_operation_log')
+            ->where('created_at', '>=', $startDate)
+            ->groupBy('user_id')
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s')"))
+            ->select(
+                DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as time"),
+                DB::raw('COUNT(user_id) as user_count')
+            )
+            ->get();
+
+        return view('user_activity_chart', compact('userCounts', 'filter'));
     }
 
     
