@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FarmActivityController;
-use App\Models\AnimalHealthRecord;
+use Illuminate\Support\Facades\DB;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +20,15 @@ use App\Models\AnimalHealthRecord;
 Route::view('auth/register', 'auth.register');
 // routes/web.php
 Route::get('/health', function () {
-    $healthRecords = AnimalHealthRecord::all();
-        $timestamps = $healthRecords->pluck('date');
-        $healthStatus = $healthRecords->pluck('status');
+    $data = DB::table('locations')
+    ->join('farms', 'locations.id', '=', 'farms.location_id')
+    ->join('breed_farm', 'farms.id', '=', 'breed_farm.farm_id')
+    ->join('breeds', 'breed_farm.breed_id', '=', 'breeds.id')
+    ->select('locations.name as location_name', 'breeds.name as breed_name', DB::raw('COUNT(*) as breed_count'))
+    ->groupBy('locations.name', 'breeds.name')
+    ->get();
+            dd($data);
 
-      
-
-        return view('livestock_health_chart', ['timestamps' => $timestamps, 'healthStatus' => $healthStatus]);
 });
 
 Route::get('/calendar', [FarmActivityController::class, 'index'])->name('event.index');

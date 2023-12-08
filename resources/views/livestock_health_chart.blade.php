@@ -66,7 +66,7 @@
             },
         },
     });
-// Function to update the chart based on the selected filters
+
 // Function to update the chart based on the selected filters
 function updateChart() {
     var dateFilter = document.getElementById('dateFilter').value;
