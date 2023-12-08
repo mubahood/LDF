@@ -101,24 +101,24 @@ class Dashboard extends Model
     }
 
     //user activity chart
-    public static function userMetrics(Request $request)
-    {
-        $filter = $request->input('filter', 'day'); // Default filter is day
+public static function userMetrics(Request $request)
+{
+    //user activity chart
+    $filter = $request->input('filter', 'day'); // Default filter is day
+    
+    $startDate = now()->sub($filter, 1); // Adjust the start date based on the selected filter
 
-        $startDate = now()->sub($filter, 1); // Adjust the start date based on the selected filter
+    $userCounts = DB::table('admin_operation_log')
+        ->where('created_at', '>=', $startDate)
+        ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d')"))
+        ->select(
+            DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') as time"),
+            DB::raw('COUNT(DISTINCT user_id) as user_count') // Count distinct user_ids for each day
+        )
+        ->get();
 
-        $userCounts = DB::table('admin_operation_log')
-            ->where('created_at', '>=', $startDate)
-            ->groupBy('user_id')
-            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s')"))
-            ->select(
-                DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d %H:%i:%s') as time"),
-                DB::raw('COUNT(user_id) as user_count')
-            )
-            ->get();
-
-        return view('user_activity_chart', compact('userCounts', 'filter'));
-    }
+    return view('user_activity_chart', compact('userCounts', 'filter'));
+}
 
     
 

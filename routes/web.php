@@ -44,5 +44,5 @@ Route::view('auth/register', 'auth.register');
 
 Route::get('/calendar', [FarmActivityController::class, 'index'])->name('event.index');
 Route::post('/calendar/events', [FarmActivityController::class, 'store'])->name('event.store');
-Route::get('/user-activity', [HomeController::class, 'userMetrics'])->name('user-activity');
+Route::get('/user-activity', [HomeController::class, 'index'])->name('user-activity');
 
