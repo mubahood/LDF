@@ -102,6 +102,16 @@ class AnimalHealthController extends AdminController
         $form->select('animal_id', __('Select Animal'))->options(\App\Models\Animal::pluck('tag_number','id'))->rules('required');
         $form->textarea('diagnosis', __('Diagnosis'));
         $form->textarea('treatment', __('Treatment'));
+        $form->select('status', __('Status'))->options(
+            ['Sick' => 'Sick', 
+            'Healthy' => 'Healthy',
+            'Recovered' => 'Recovered',
+            'Under Observation' => 'Under Observation',
+            'Euthanized' => 'Euthanized',
+            'Dead' => 'Dead',
+            'Unknown' => 'Unknown'
+
+            ])->rules('required');
         $form->hidden('recorded_by');
 
         $form->saving(function (Form $form) {
