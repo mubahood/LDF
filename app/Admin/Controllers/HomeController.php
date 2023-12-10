@@ -41,6 +41,12 @@ class HomeController extends Controller
                 $row->column(12, function (Column $column) {
                     $column->append(Dashboard::userMetrics(request()));
                 });
+            })
+
+            ->row(function (Row $row) {
+                $row->column(12, function (Column $column) {
+                    $column->append(Dashboard::financialSummary());
+                });
             });
 
 

@@ -101,26 +101,57 @@ class Dashboard extends Model
     }
 
     //user activity chart
-public static function userMetrics(Request $request)
-{
-    //user activity chart
-    $filter = $request->input('filter', 'day'); // Default filter is day
-    
-    $startDate = now()->sub($filter, 1); // Adjust the start date based on the selected filter
+    public static function userMetrics(Request $request)
+    {
+        //user activity chart
+        $filter = $request->input('filter', 'day'); // Default filter is day
+        
+        $startDate = now()->sub($filter, 1); // Adjust the start date based on the selected filter
 
-    $userCounts = DB::table('admin_operation_log')
-        ->where('created_at', '>=', $startDate)
-        ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d')"))
-        ->select(
-            DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') as time"),
-            DB::raw('COUNT(DISTINCT user_id) as user_count') // Count distinct user_ids for each day
-        )
-        ->get();
+        $userCounts = DB::table('admin_operation_log')
+            ->where('created_at', '>=', $startDate)
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d')"))
+            ->select(
+                DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') as time"),
+                DB::raw('COUNT(DISTINCT user_id) as user_count') // Count distinct user_ids for each day
+            )
+            ->get();
 
-    return view('user_activity_chart', compact('userCounts', 'filter'));
-}
+        return view('user_activity_chart', compact('userCounts', 'filter'));
+    }
 
-    
+    //financial summary chart
+    public static function financialSummary()
+    {
+        $financialRecords = FinancialRecord::all();
+
+        // Group financial records by date
+        $groupedRecords = $financialRecords->groupBy(function ($record) {
+            return $record->created_at->toDateString(); // Assuming Carbon is used
+        });
+
+        $timestamps = $groupedRecords->keys()->toArray();
+
+        // Calculate total income and expenses for each day
+        $totals = $groupedRecords->map(function ($records) {
+            $income = $records->where('transaction_type', 'Income')->sum('amount');
+            $expenses = $records->where('transaction_type', 'Expense')->sum('amount');
+
+            return [
+                'income' => $income,
+                'expenses' => $expenses,
+            ];
+        });
+
+        $income = $totals->pluck('income')->toArray();
+        $expenses = $totals->pluck('expenses')->toArray();
+
+        return view('financial_records_chart', [
+            'timestamps' => $timestamps,
+            'income' => $income,
+            'expenses' => $expenses,
+        ]);
+    }
 
     
 }
