@@ -38,6 +38,11 @@ class ProductionController extends AdminController
 
         $grid->model()->orderBy('updated_at', 'desc');
 
+         //show a user only their records if they are not an admin
+         if (!auth()->user()->inRoles(['administrator','ldf_admin'])) {
+            $grid->model()->where('owner_id', auth()->user()->id);
+        }
+
         // $grid->column('id', __('Id'));
         $grid->breed()->name('Breed');
         $grid->farm()->name('Farm');
@@ -76,9 +81,13 @@ class ProductionController extends AdminController
     {
         $show = new Show(ProductionRecord::findOrFail($id));
 
-        $show->field('id', __('Id'));
-        $show->field('breed_id', __('Breed id'));
-        $show->field('farm_id', __('Farm id'));
+    
+        $show->field('breed_id', __('Breed id'))->as(function ($breed_id) {
+            return \App\Models\Breed::find($breed_id)?->name;
+        });
+        $show->field('farm_id', __('Farm id'))->as(function ($farm_id) {
+            return \App\Models\Farm::find($farm_id)?->name;
+        });
         $show->field('production_type', __('Production type'));
         $show->field('weight', __('Weight'));
         $show->field('daily_weight_gain', __('Daily weight gain'));
@@ -100,8 +109,11 @@ class ProductionController extends AdminController
     protected function form()
     {
         $form = new Form(new ProductionRecord());
+          //get users farms
+          $user_id = auth()->user()->id;
+          $farms = \App\Models\Farm::where('owner_id', $user_id)->pluck('name', 'id');
 
-        $form->select('farm_id', __('Select Farm'))->options(\App\Models\Farm::pluck('name', 'id'));
+        $form->select('farm_id', __('Select Farm'))->options($farms);
         $form->select('breed_id', __('Select Breed'))->options(\App\Models\Breed::pluck('name', 'id'));
         $form->text('production_type', __('Production type'));
         $form->text('weight', __('Weight'));
@@ -110,6 +122,7 @@ class ProductionController extends AdminController
         $form->text('quality', __('Quality'));
         $form->number('input_ratios', __('Input ratios'));
         $form->text('value_addition', __('Value addition'));
+        $form->hidden('owner_id')->default(auth()->user()->id);
 
         return $form;
     }
