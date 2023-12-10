@@ -5,9 +5,7 @@
     <div class="card-header" style="position: relative;">
     <h3 class="card-title">{{__('Livestock Breed Distribution')}}</h3>
     <p>{{__('A summary of the Livestock Breed Distribution across subcounties')}}</p>
-    <div style="position: absolute; top: 0; right: 0;">
-        <a href="{{ admin_url('/animal-health-records') }}" class="btn-view-all">{{__('View')}}</a>
-    </div>
+   
 </div>
 
     </div>
