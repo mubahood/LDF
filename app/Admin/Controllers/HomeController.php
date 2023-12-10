@@ -20,34 +20,42 @@ class HomeController extends Controller
             ->title(__('Dashboard'))
             ->row(function (Row $row) {
                 $row->column(12, function (Column $column) {
+                    $column->append(Dashboard::cards());
+                });
+            })
+            ->row(function (Row $row) {
+                $row->column(6, function (Column $column) {
                     $column->append(Dashboard::liveStockHealth());
+                });
+                $row->column(6, function (Column $column) {
+                    $column->append(Dashboard::livestockBreed());
                 });
            
             })
 
             // ->row(function (Row $row) {
-            //      $row->column(12, function (Column $column) {
-            //          $column->append(Dashboard::livestockBreed());
-            //      });
-            //  })
-
-            // ->row(function (Row $row) {
             //     $row->column(12, function (Column $column) {
             //         $column->append(Dashboard::productionMetrics());
             //     });
-            // })
+            // });
+
+           
 
             ->row(function (Row $row) {
-                $row->column(12, function (Column $column) {
-                    $column->append(Dashboard::userMetrics(request()));
-                });
-            })
-
-            ->row(function (Row $row) {
-                $row->column(12, function (Column $column) {
+                $row->column(6, function (Column $column) {
                     $column->append(Dashboard::financialSummary());
                 });
+                $row->column(6, function (Column $column) {
+                    $column->append(Dashboard::userMetrics(request()));
+                });
             });
+            
+
+            // ->row(function (Row $row) {
+            //     $row->column(12, function (Column $column) {
+            //         $column->append(view('calendar'));
+            //     });
+            // });
 
 
      

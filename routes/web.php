@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FarmActivityController;
 use App\Admin\Controllers\HomeController;
 use Illuminate\Support\Facades\DB;
+use App\Models\FarmActivity;
 use Illuminate\Http\Request;
+
 
 
 /*
@@ -46,4 +48,26 @@ Route::get('/calendar', [FarmActivityController::class, 'index'])->name('event.i
 Route::post('/calendar/events', [FarmActivityController::class, 'store'])->name('event.store');
 Route::get('/user-activity', [HomeController::class, 'index'])->name('user-activity');
 Route::get('/financial-summary-data', [HomeController::class, 'index'])->name('financial-summary-data');
+// routes/web.php
+
+Route::get('/calendar-events', function () {
+    try {
+         // Fetch activities from the database
+    $activities = FarmActivity::all();
+
+    // Transform activities into the required format for FullCalendar
+    $events = [];
+    foreach ($activities as $activity) {
+        $events[] = [
+            'title' => $activity->name,
+            'start' => $activity->scheduled_at->toDateString(), // Assuming 'due_date' is a date attribute
+        ];
+    }
+    return response()->json($events);
+    } catch (\Exception $e) {
+        return ('Error fetching calendar events: ' . $e->getMessage());
+        
+    }
+});
+
 

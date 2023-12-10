@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livestock Breed Distribution</title>
-    <!-- Include Chart.js from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
+
+<div class="card">
+    <!--begin::Header-->
+    <div >
+    <div class="card-header" style="position: relative;">
+    <h3 class="card-title">{{__('Livestock Breed Distribution')}}</h3>
+    <p>{{__('A summary of the Livestock Breed Distribution across subcounties')}}</p>
+    <div style="position: absolute; top: 0; right: 0;">
+        <a href="{{ admin_url('/animal-health-records') }}" class="btn-view-all">{{__('View')}}</a>
+    </div>
+</div>
+
+    </div>
+   
 <select id="locationSelector">
         <option value="">Select Location</option>
         <?php
@@ -114,5 +118,4 @@ function updateChart(selectedLocation) {
         });
 
     </script>
-</body>
-</html>
+</div>

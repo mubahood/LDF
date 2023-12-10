@@ -1,4 +1,13 @@
+<div class="card">
+    <!--begin::Header-->
+    <div >
+    <div class="card-header" style="position: relative;">
+    <h3 class="card-title">{{__('User Engagement')}}</h3>
+    
+</div>
 
+    </div>
+   
 <form action="{{ route('user-activity') }}" method="get">
     <label for="filter">Filter:</label>
     <select id="filter" name="filter">
@@ -49,5 +58,6 @@
         }
     });
 </script>
+</div>
      
 

@@ -153,5 +153,41 @@ class Dashboard extends Model
         ]);
     }
 
+    //calendar events
+    public function getCalendarEvents(Request $request)
+    {
+        // Fetch activities from the database
+        $activities = FarmActivity::all();
+
+        // Transform activities into the required format for FullCalendar
+        $events = [];
+        foreach ($activities as $activity) {
+            $events[] = [
+                'title' => $activity->name,
+                'start' => $activity->scheduled_at->format('Y-m-d'),
+
+            ];
+        }
+
+        return response()->json($events);
+    }
+
+    //function to get the totals
+    public static function cards()
+    {
+        $data = [
+            'total_farmers' => Farmer::count(),
+            'pending_farmers' => Farmer::where('status', 'pending')->orWhere('status', null)->count(),
+            'total_cooperatives' => Cooperative::count(),
+            'pending_cooperatives' => Cooperative::where('status', 'pending')->orWhere('status', null)->count(),
+            'total_input_providers' => ServiceProvider::count(),
+            'pending_input_providers' => ServiceProvider::where('status', 'pending')->orWhere('status', null)->count(),
+            'pending_vets' => Vet::where('status', 'pending')->orWhere('status', null)->count(),
+            'total_vets' => Vet::count(),
+        ];
+
+        return view('user_cards', ['data' => $data]);
+    }
+
     
 }

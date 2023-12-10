@@ -1,13 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LiveStock Health Chart</title>
-    <!-- Include Chart.js -->
+
+<div class="card">
+    <!--begin::Header-->
+    <div >
+    <div class="card-header" style="position: relative;">
+    <h3 class="card-title">{{__('Livestock Health status')}}</h3>
+    <p>{{__('A summary of the livestock status')}}</p>
+    <div style="position: absolute; top: 0; right: 0;">
+        <a href="{{ admin_url('/animal-health-records') }}" class="btn-view-all">{{__('View')}}</a>
+    </div>
+</div>
+
+    </div>
+   
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
     <div style="width: 80%; margin: auto;">
         <label for="dateFilter">Filter by Date:</label>
         <select id="dateFilter" onchange="updateChart()">
@@ -99,5 +104,5 @@ function updateChart() {
 
 
     </script>
-</body>
-</html>
+</div>
+
