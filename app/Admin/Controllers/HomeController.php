@@ -18,20 +18,20 @@ class HomeController extends Controller
     {
         return $content
             ->title(__('Dashboard'))
-            ->row(function (Row $row) {
-                $row->column(12, function (Column $column) {
-                    $column->append(Dashboard::cards());
-                });
-            })
-            ->row(function (Row $row) {
-                $row->column(6, function (Column $column) {
-                    $column->append(Dashboard::liveStockHealth());
-                });
-                $row->column(6, function (Column $column) {
-                    $column->append(Dashboard::livestockBreed());
-                });
+            // ->row(function (Row $row) {
+            //     $row->column(12, function (Column $column) {
+            //         $column->append(Dashboard::cards());
+            //     });
+            // })
+            // ->row(function (Row $row) {
+            //     $row->column(6, function (Column $column) {
+            //         $column->append(Dashboard::liveStockHealth());
+            //     });
+            //     $row->column(6, function (Column $column) {
+            //         $column->append(Dashboard::livestockBreed());
+            //     });
            
-            })
+            // })
 
             // ->row(function (Row $row) {
             //     $row->column(12, function (Column $column) {
@@ -41,21 +41,21 @@ class HomeController extends Controller
 
            
 
-            ->row(function (Row $row) {
-                $row->column(6, function (Column $column) {
-                    $column->append(Dashboard::financialSummary());
-                });
-                $row->column(6, function (Column $column) {
-                    $column->append(Dashboard::userMetrics(request()));
-                });
-            });
-            
-
             // ->row(function (Row $row) {
-            //     $row->column(12, function (Column $column) {
-            //         $column->append(view('calendar'));
+            //     $row->column(6, function (Column $column) {
+            //         $column->append(Dashboard::financialSummary());
+            //     });
+            //     $row->column(6, function (Column $column) {
+            //         $column->append(Dashboard::userMetrics(request()));
             //     });
             // });
+            
+
+            ->row(function (Row $row) {
+                $row->column(12, function (Column $column) {
+                    $column->append(view('calendar'));
+                });
+            });
 
 
      

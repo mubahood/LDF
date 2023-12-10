@@ -45,7 +45,7 @@ Route::view('auth/register', 'auth.register');
 
 
 Route::get('/calendar', [FarmActivityController::class, 'index'])->name('event.index');
-Route::post('/calendar/events', [FarmActivityController::class, 'store'])->name('event.store');
+//Route::post('/calendar/events', [FarmActivityController::class, 'store'])->name('event.store');
 Route::get('/user-activity', [HomeController::class, 'index'])->name('user-activity');
 Route::get('/financial-summary-data', [HomeController::class, 'index'])->name('financial-summary-data');
 // routes/web.php
@@ -60,7 +60,7 @@ Route::get('/calendar-events', function () {
     foreach ($activities as $activity) {
         $events[] = [
             'title' => $activity->name,
-            'start' => $activity->scheduled_at->toDateString(), // Assuming 'due_date' is a date attribute
+            'start' => $activity->scheduled_at, // Assuming 'due_date' is a date attribute
         ];
     }
     return response()->json($events);
