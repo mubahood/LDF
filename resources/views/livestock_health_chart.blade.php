@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <div style="width: 80%; margin: auto;">
         <label for="dateFilter">Filter by Date:</label>
-        <select id="dateFilter" onchange="updateChart()">
+        <select id="dateFilter" onchange="updateHealthChart()">
             <option value="all">All Dates</option>
             @foreach ($timestamps as $timestamp)
                 <option value="{{ $timestamp }}">{{ $timestamp }}</option>
@@ -23,7 +23,7 @@
         </select>
 
         <label for="statusFilter">Filter by Status:</label>
-        <select id="statusFilter" onchange="updateChart()">
+        <select id="statusFilter" onchange="updateHealthChart()">
             <option value="all">All Statuses</option>
             @foreach ($datasets as $dataset)
         <option value="{{ $dataset['label'] }}">{{ $dataset['label'] }}</option>
@@ -73,7 +73,7 @@
     });
 
 // Function to update the chart based on the selected filters
-function updateChart() {
+function updateHealthChart() {
     var dateFilter = document.getElementById('dateFilter').value;
     var statusFilter = document.getElementById('statusFilter').value;
 
