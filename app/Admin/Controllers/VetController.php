@@ -149,26 +149,7 @@ class VetController extends AdminController
         $form->text('surname', __('Surname'))->rules('required');
         $form->text('given_name', __('Given name'))->rules('required');
         $form->text('nin', __('Nin'))->rules('required');
-        //  //add a get gps coordinate button
-        //  $form->html('<button type="button" id="getLocationButton">' . __('Get GPS Coordinates') . '</button>');
-
-        //  $form->text('coordinates', __('Location '))->attribute([
-        //      'id' => 'coordinates',   
-        //  ])->required();
-      
-         
-        //  //script to get the gps coordinates
-        //  Admin::script(<<<SCRIPT
-        //      document.getElementById('getLocationButton').addEventListener('click', function() {
-        //          if ("geolocation" in navigator) {
-        //              navigator.geolocation.getCurrentPosition(function(position) {
-        //                  document.getElementById('coordinates').value = position.coords.latitude + ', ' + position.coords.longitude;
-        //              });
-        //          } else {
-        //              alert('Geolocation is not supported by your browser.');
-        //          }
-        //      });
-        //  SCRIPT);
+       
         $form->text('coordinates', __('Physical Address '))->required();
         $form->select('location_id', __('District SubCounty'))->options(\App\Models\Location::where('parent','!=',0)->pluck('name', 'id'))->rules('required');
         $form->text('village', __('Village'));
