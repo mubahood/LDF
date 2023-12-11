@@ -60,7 +60,7 @@ Route::get('/calendar-events', function () {
     foreach ($activities as $activity) {
         $events[] = [
             'title' => $activity->name,
-            'start' => $activity->scheduled_at, // Assuming 'due_date' is a date attribute
+            'start' => $activity->scheduled_at, 
         ];
     }
     return response()->json($events);
