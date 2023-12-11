@@ -51,23 +51,8 @@ class ProductionController extends AdminController
         $grid->column('daily_weight_gain', __('Daily weight gain'));
         $grid->column('quantity', __('Quantity'));
         $grid->column('quality', __('Quality'));
-        $grid->column('input_ratios', __('Input ratios'));
         $grid->column('value_addition', __('Value addition'));
-        $grid->column('created_at', __('Created at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
-        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
-
+       
         return $grid;
     }
 

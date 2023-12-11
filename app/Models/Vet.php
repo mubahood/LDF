@@ -42,6 +42,16 @@ class Vet extends Model
             self::updated(function ($model) 
             {
                 Notification::update_notification($model, 'Vet', request()->segment(count(request()->segments())-1));
+
+                if($model->status == 'approved'){
+                    AdminRoleUser::where([
+                        'user_id' => $model->user_id
+                    ])->delete();
+                    $new_role = new AdminRoleUser();
+                    $new_role->user_id = $model->user_id;
+                    $new_role->role_id = 4;
+                    $new_role->save();
+                }
             });
 
     }

@@ -83,7 +83,12 @@ class FarmController extends AdminController
     {
         $show = new Show(Farm::findOrFail($id));
 
-        
+        $show->field('profile_picture', __('Farm image'))->as(function ($profile_picture) {
+            if ($profile_picture == null) {
+                return 'No image';
+            }
+            return "<img src='/storage/$profile_picture' width='800px' height='400px' />";
+        })->unescape();
         $show->field('name', __('Name'));
         $show->field('location_id', __('SubCounty'))->as(function ($location_id) {
             return \App\Models\Location::find($location_id)->name;
@@ -94,7 +99,7 @@ class FarmController extends AdminController
         $show->field('production_type', __('Farm type'));
         $show->field('date_of_establishment', __('Date of establishment'));
         $show->field('size', __('Land size'));
-        $show->field('profile_picture', __('Profile picture'));
+       
         $show->field('number_of_workers', __('Number of workers'));
         $show->field('land_ownership', __('Land ownership'));
         $show->field('general_remarks', __('General remarks'));

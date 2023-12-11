@@ -51,6 +51,18 @@ class VetController extends AdminController
          //disable action buttons appropriately
          Utils::disable_buttons('Vet', $grid);
 
+         //If the user is a vet, disable the create button
+        if (Admin::user()->inRoles(['vet'])) {
+            $grid->disableCreateButton();
+        }
+
+        $grid->export(function ($export) {
+        
+            $export->originalValue(['status',]);
+            $export->except(['created_at', 'updated_at','profile_picture',]);
+           
+        });
+
         $grid->column('created_at', __('Registered On'))->display(function ($x) {
             $c = Carbon::parse($x);
         if ($x == null) {
@@ -59,7 +71,7 @@ class VetController extends AdminController
         return $c->format('d M, Y');
         });
      
-        $grid->column('profile_picture', __('Profile picture'))->image();
+        $grid->column('profile_picture', __('Profile picture'))->image( '', 50, 50);
         $grid->column('title', __('Title'));
         $grid->column('category', __('Category'));
         $grid->column('surname', __('Surname'));
@@ -68,14 +80,14 @@ class VetController extends AdminController
         $grid->column('services_offered', __('Services offered'));
         $grid->column('ares_of_operation', __('Areas of operation'));
         $grid->column('status', __('Status'))->display(function ($x) {
-            if ($x == 'Approved') {
-                return "<span class='badge badge-success'>$x</span>";
-            } elseif ($x == 'Rejected') {
-                return "<span class='badge badge-danger'>$x</span>";
-            } elseif ($x == 'Halted') {
-                return "<span class='badge badge-warning'>$x</span>";
+            if ($x == 'approved') {
+                return "<span class='label label-success'>$x</span>";
+            } elseif ($x == 'rejected') {
+                return "<span class='label label-danger'>$x</span>";
+            } elseif ($x == 'halted') {
+                return "<span class='label label-warning'>$x</span>";
             } else {
-                return "<span class='badge badge-info'>$x</span>";
+                return "<span class='label label-info'>$x</span>";
             }
         });
 
@@ -94,13 +106,15 @@ class VetController extends AdminController
         //delete notification after viewing the form
         Utils::delete_notification('Vet', $id);
 
-        $show->file('profile_picture', __('Profile picture'));
+        $show->field('profile_picture', __('Profile picture'))->image();
         $show->field('title', __('Title'));
         $show->field('category', __('Category'));
         $show->field('surname', __('Surname'));
         $show->field('given_name', __('Given name'));
         $show->field('nin', __('Nin'));
-        $show->field('physical_address', __('SubCounty'));
+        $show->field('location_id', __('District SubCounty'))->as(function ($x) {
+            return \App\Models\Location::where('id', $x)->pluck('name')->first();
+        });
         $show->field('village', __('Village'));
         $show->field('parish', __('Parish'));
         $show->field('zone', __('Zone'));
@@ -117,7 +131,28 @@ class VetController extends AdminController
         $show->field('ares_of_operation', __('Areas of operation'));
         $show->field('certificate_of_registration', __('Certificate of registration'))->file();
         $show->field('license', __('License'))->file();
-        $show->field('other_documents', __('Other documents'));
+        $show->field('other_documents', __('Other documents'))->as(function ($x) {
+            $files = '';
+
+            //check if $x is null
+            if ($x == null) {
+                return 'No documents uploaded';
+            }
+            // Decode the JSON string into an array
+            $xArray = json_decode($x, true);
+            
+            // Check if decoding was successful and $xArray is an array
+            if (is_array($xArray)) {
+                foreach ($xArray as $key => $value) {
+                    $files .= "<a href='/storage/$value' target='_blank'>Document ".($key+1)."</a><br>";
+                }
+            } else {
+                // Handle the case where decoding failed or $xArray is not an array
+                $files = 'Invalid data for $x';
+            }
+            
+            return $files ;
+        })->unescape();
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 

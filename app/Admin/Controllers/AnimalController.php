@@ -58,13 +58,6 @@ class AnimalController extends AdminController
         }
         return $c->format('d M, Y');
         });
-        $grid->column('updated_at', __('Updated at'))->display(function ($x) {
-            $c = Carbon::parse($x);
-        if ($x == null) {
-            return $x;
-        }
-        return $c->format('d M, Y');
-        });
 
         return $grid;
     }
@@ -79,15 +72,18 @@ class AnimalController extends AdminController
     {
         $show = new Show(Animal::findOrFail($id));
 
-        // $show->field('id', __('Id'));
+        
         $show->field('tag_number', __('Tag Number'));
-        $show->field('farm_id', __('Farm id'));
-        $show->field('breed_id', __('Breed id'));
+        $show->field('farm_id', __('Farm id'))->as(function ($farm_id) {
+            return \App\Models\Farm::find($farm_id)->name;
+        });
+        $show->field('breed_id', __('Breed id'))->as(function ($breed_id) {
+            return \App\Models\Breed::find($breed_id)->name;
+        });
         $show->field('parents', __('Parents'));
         $show->field('dob', __('Dob'));
         $show->field('date_of_weaning', __('Date of weaning'));
-        $show->field('created_at', __('Created at'));
-        $show->field('updated_at', __('Updated at'));
+      
 
         return $show;
     }

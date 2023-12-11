@@ -64,6 +64,16 @@ class Farmer extends Model
             self::updated(function ($model) 
             {
                 Notification::update_notification($model, 'Farmer', request()->segment(count(request()->segments())-1));
+                
+                if($model->status == 'approved'){
+                    AdminRoleUser::where([
+                        'user_id' => $model->user_id
+                    ])->delete();
+                    $new_role = new AdminRoleUser();
+                    $new_role->user_id = $model->user_id;
+                    $new_role->role_id = 3;
+                    $new_role->save();
+                }
             });
 
     }
