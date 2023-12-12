@@ -13,6 +13,10 @@ use App\Http\Controllers\FinancialRecordController;
 use App\Http\Controllers\LivestockTypeController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProductionRecordController;
+use App\Http\Controllers\ServiceProviderController;
+use App\Http\Controllers\VectorAndDiseaseController;
+use App\Http\Controllers\VetsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +45,7 @@ Route::resource('financial-records', FinancialRecordController::class);
 Route::resource('livestock-types', LivestockTypeController::class);
 Route::resource('locations', LocationController::class);
 Route::resource('notifications', NotificationController::class);
+Route::resource('production-records', ProductionRecordController::class);
+Route::resource('service-providers', ServiceProviderController::class);
+Route::resource('vectors-and-diseases', VectorAndDiseaseController::class);
+Route::resource('vets', VetsController::class);

@@ -8,6 +8,36 @@ use Illuminate\Database\Eloquent\Model;
 class Vet extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'profile_picture',
+        'title',
+        'category',
+        'surname',
+        'given_name',
+        'nin',
+        'coordinates',
+        'location_id',
+        'village',
+        'parish',
+        'zone',
+        'group_or_practice',
+        'license_number',
+        'license_expiry_date',
+        'date_of_registration',
+        'brief_profile',
+        'primary_phone_number',
+        'secondary_phone_number',
+        'email',
+        'postal_address',
+        'services_offered',
+        'ares_of_operation',
+        'certificate_of_registration',
+        'license',
+        'other_documents',
+        'status',
+        'user_id'
+        
+    ];
 
     public function statuses()
     {

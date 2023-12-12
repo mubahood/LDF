@@ -9,6 +9,15 @@ class VectorAndDisease extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'date',
+        'farm_id',
+        'animal_id',
+        'name',
+        'image',
+        'description',
+    ];
+
     public function farm()
     {
         return $this->belongsTo(Farm::class);

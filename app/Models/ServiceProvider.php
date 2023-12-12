@@ -8,6 +8,30 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceProvider extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'name',
+        'owner_name',
+        'owner_profile',
+        'class_of_service',
+        'date_of_registration',
+        'physical_address',
+        'primary_phone_number',
+        'secondary_phone_number',
+        'email',
+        'postal_address',
+        'other_services',
+        'logo',
+        'distroict_of_operation',
+        'NDA_registration_number',
+        'tin_number_business',
+        'tin_number_owner',
+        'license',
+        'other_documents',
+        'status',
+        'user_id',
+
+
+    ];
 
     public function statuses()
     {
