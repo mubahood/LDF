@@ -9,6 +9,15 @@ class AnimalHealthRecord extends Model
 {
     use HasFactory;
 
+    protected $fillable=[
+        'date',
+        'record_type',
+        'animal_id',
+        'diagnosis',
+        'treatment',
+        'recorded_by',
+    ];
+
     public function animal()
     {
         return $this->belongsTo(Animal::class);

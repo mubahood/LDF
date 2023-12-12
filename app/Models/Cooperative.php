@@ -8,6 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Cooperative extends Model
 {
     use HasFactory;
+    protected $fillable =[
+        'name',
+        'location_id',
+        'village',
+        'parish',
+        'zone',
+        'production_type',
+        'date_of_establishment',
+        'certification',
+        'description',
+        'applicant_id',
+        
+    ];
+
 
     public function location()
     {

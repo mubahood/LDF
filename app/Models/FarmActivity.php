@@ -9,16 +9,14 @@ class FarmActivity extends Model
 {
     use HasFactory;
     protected $fillable = [
-
         'farm_id',
-        'start',
-        'end',
-        'title',
-        'user_id',
+        'name',
+        'scheduled_at',
         'description',
-        
+        'user_id',
     ];
-
+        
+  
     public function farm()
     {
         return $this->belongsTo(Farm::class);

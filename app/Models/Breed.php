@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Breed extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'livestock_type_id',
+        'description',
+        'image',
+        
+    ];
 
     public function animals()
     {

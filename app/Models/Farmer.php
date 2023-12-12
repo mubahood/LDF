@@ -9,6 +9,36 @@ class Farmer extends Model
 {
     use HasFactory;
 
+    protected $fillable=[
+        'profile_picture',
+        'surname',
+        'given_name',
+        'date_of_birth',
+        'nin',
+        'location_id',
+        'village',
+        'parish',
+        'zone',
+        'gender',
+        'marital_status',
+        'number_of_dependants',
+        'farmer_group',
+        'primary_phone_number',
+        'secondary_phone_number',
+        'is_land_owner',
+        'land_ownership',
+        'production_scale',
+        'access_to_credit',
+        'credit_institution',
+        'date_started_farming',
+        'highest_level_of_education',
+        'admin_remarks',
+        'status',
+        'user_id',
+        
+
+    ];
+
     protected $guarded = [];
 
     public function applicant()

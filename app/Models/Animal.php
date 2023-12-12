@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Animal extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'tag_number',
+        'farm_id',
+        'breed_id',
+        'parents',
+        'dob',
+        'date_of_weaning',
+    ];
 
     public function healthRecords()
     {

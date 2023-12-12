@@ -8,6 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Farm extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'coordinates',
+        'location_id',
+        'village',
+        'parish',
+        'zone',
+        'livestock_type',
+        'production_type',
+        'date_of_establishment',
+        'size',
+        'profile_picture',
+        'number_of_livestock',
+        'number_of_workers',
+        'land_ownership',
+        'no_land_ownership_reason',
+        'general_remarks',
+        'owner_id',
+
+    ];
 
     protected $guarded = [];
 
