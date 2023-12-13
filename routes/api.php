@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnimalController;
@@ -29,10 +30,14 @@ use App\Http\Controllers\VetsController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
+Route::get('test', [AuthController::class, 'index']);
+Route::post('register', [AuthController::class, 'register']);
+Route::get('profile', [AuthController::class, 'profile']);
+Route::post('login', [AuthController::class, 'login']);
 
 Route::resource('animals', AnimalController::class);
 Route::resource('animal-health-records', AnimalHealthRecordController::class);

@@ -8,8 +8,21 @@ use Encore\Admin\Auth\Database\Administrator;
 use DB;
 use App\Models\AdminRole;
 
-class User extends Administrator
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\CooperativeMember;
+
+
+
+
+class User extends Authenticatable implements JWTSubject
 {
+
+    use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'admin_users';
 
     public static function getAgents()
@@ -46,4 +59,20 @@ class User extends Administrator
     {
         return $this->hasMany(Farmer::class, 'agent_id');
     }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
 }

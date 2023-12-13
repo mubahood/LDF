@@ -8,6 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 class Utils extends Model
 {
     use HasFactory;
+
+    public static function apiSuccess($data = null, $message = 'Success')
+    {
+        header('Content-Type: application/json');
+
+        die(json_encode([
+            'code' => 1,
+            'message' => $message,
+            'data' => $data
+        ]));
+    }
+
+    public static function apiError($message = 'Error', $data = null)
+    {
+        header('Content-Type: application/json');
+        die(json_encode([
+            'code' => 0,
+            'message' => $message,
+            'data' => $data
+        ]));
+    }
     //delete notification after the form has been viewed
     public static function delete_notification($model_name, $id)
     {
